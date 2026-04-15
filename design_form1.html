@@ -20,10 +20,10 @@
     }
 
     :root {
-      --green: #1D9E75;
-      --green-dark: #085041;
-      --green-light: #E1F5EE;
-      --green-mid: #5DCAA5;
+      --red: #C0392B;
+      --red-dark: #7B1A0D;
+      --red-light: #FAECE7;
+      --red-mid: #E07060;
       --coral: #D85A30;
       --coral-light: #FAECE7;
       --coral-dark: #993C1D;
@@ -58,7 +58,6 @@
       min-height: 100vh
     }
 
-    /* Layout */
     .page {
       display: grid;
       grid-template-columns: 1fr 300px;
@@ -68,7 +67,6 @@
       min-height: 100vh
     }
 
-    /* Header */
     header {
       grid-column: 1/-1;
       display: flex;
@@ -95,7 +93,7 @@
 
     .logo-text em {
       font-style: italic;
-      color: var(--green)
+      color: #C0392B;
     }
 
     .hdr-meta {
@@ -109,13 +107,11 @@
       font-weight: 500
     }
 
-    /* Main form */
     main {
       padding: 28px 28px 80px;
       overflow-y: auto
     }
 
-    /* Sidebar */
     aside {
       background: var(--surface);
       border-left: 1px solid var(--border2);
@@ -129,7 +125,6 @@
       gap: 16px
     }
 
-    /* Intro */
     .intro {
       margin-bottom: 22px
     }
@@ -150,7 +145,6 @@
       line-height: 1.65
     }
 
-    /* Progress */
     .prog-row {
       display: flex;
       justify-content: space-between;
@@ -174,13 +168,12 @@
 
     .prog-fill {
       height: 100%;
-      background: var(--green);
+      background: #C0392B;
       border-radius: 99px;
       width: 0%;
       transition: width .4s
     }
 
-    /* Step nav */
     .steps {
       display: flex;
       gap: 5px;
@@ -211,18 +204,17 @@
     }
 
     .step.active {
-      border-color: var(--green);
-      color: var(--green-dark);
-      background: var(--green-light)
+      border-color: #C0392B;
+      color: #7B1A0D;
+      background: #FAECE7;
     }
 
     .step.done {
-      border-color: var(--green-mid);
+      border-color: #E07060;
       background: var(--bg);
-      color: var(--green-dark)
+      color: #7B1A0D;
     }
 
-    /* Theme card */
     .card {
       background: var(--surface);
       border-radius: var(--r);
@@ -304,7 +296,6 @@
       display: block
     }
 
-    /* Questions */
     .qs {
       padding: 0 22px 22px
     }
@@ -430,7 +421,6 @@
       background: linear-gradient(to right, var(--fut) 50%, var(--border2) 50%)
     }
 
-    /* Nav */
     .fnav {
       display: flex;
       justify-content: space-between;
@@ -464,14 +454,14 @@
       padding: 9px 22px;
       border-radius: var(--rsm);
       border: none;
-      background: var(--green);
+      background: #C0392B;
       color: #fff;
       cursor: pointer;
       transition: all .15s
     }
 
     .btn-next:hover {
-      background: var(--green-dark)
+      background: #7B1A0D
     }
 
     .nav-hint {
@@ -479,7 +469,6 @@
       color: var(--ink3)
     }
 
-    /* Submit */
     .submit {
       display: none;
       background: var(--surface);
@@ -515,18 +504,17 @@
       padding: 12px 32px;
       border-radius: var(--rsm);
       border: none;
-      background: var(--green);
+      background: #C0392B;
       color: #fff;
       cursor: pointer;
       transition: all .2s
     }
 
     .btn-sub:hover {
-      background: var(--green-dark);
+      background: #7B1A0D;
       transform: translateY(-1px)
     }
 
-    /* Sidebar */
     .sb-title {
       font-family: 'DM Serif Display', serif;
       font-size: 16px;
@@ -634,20 +622,19 @@
 <body>
   <div class="page">
 
-    <!-- Header -->
     <header>
       <a href="https://mydaisy.eu" class="logo" target="_blank">
         <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
-          <circle cx="18" cy="18" r="5" fill="#1D9E75" />
-          <ellipse cx="18" cy="7" rx="3.5" ry="6.5" fill="#5DCAA5" opacity=".8" />
-          <ellipse cx="18" cy="29" rx="3.5" ry="6.5" fill="#5DCAA5" opacity=".8" />
-          <ellipse cx="7" cy="18" rx="6.5" ry="3.5" fill="#5DCAA5" opacity=".8" />
-          <ellipse cx="29" cy="18" rx="6.5" ry="3.5" fill="#5DCAA5" opacity=".8" />
-          <ellipse cx="10.5" cy="10.5" rx="3.5" ry="6.5" transform="rotate(-45 10.5 10.5)" fill="#9FE1CB"
+          <circle cx="18" cy="18" r="5" fill="#C0392B" />
+          <ellipse cx="18" cy="7" rx="3.5" ry="6.5" fill="#E07060" opacity=".8" />
+          <ellipse cx="18" cy="29" rx="3.5" ry="6.5" fill="#E07060" opacity=".8" />
+          <ellipse cx="7" cy="18" rx="6.5" ry="3.5" fill="#E07060" opacity=".8" />
+          <ellipse cx="29" cy="18" rx="6.5" ry="3.5" fill="#E07060" opacity=".8" />
+          <ellipse cx="10.5" cy="10.5" rx="3.5" ry="6.5" transform="rotate(-45 10.5 10.5)" fill="#F5C4B3"
             opacity=".7" />
-          <ellipse cx="25.5" cy="10.5" rx="3.5" ry="6.5" transform="rotate(45 25.5 10.5)" fill="#9FE1CB" opacity=".7" />
-          <ellipse cx="10.5" cy="25.5" rx="3.5" ry="6.5" transform="rotate(45 10.5 25.5)" fill="#9FE1CB" opacity=".7" />
-          <ellipse cx="25.5" cy="25.5" rx="3.5" ry="6.5" transform="rotate(-45 25.5 25.5)" fill="#9FE1CB"
+          <ellipse cx="25.5" cy="10.5" rx="3.5" ry="6.5" transform="rotate(45 25.5 10.5)" fill="#F5C4B3" opacity=".7" />
+          <ellipse cx="10.5" cy="25.5" rx="3.5" ry="6.5" transform="rotate(45 10.5 25.5)" fill="#F5C4B3" opacity=".7" />
+          <ellipse cx="25.5" cy="25.5" rx="3.5" ry="6.5" transform="rotate(-45 25.5 25.5)" fill="#F5C4B3"
             opacity=".7" />
         </svg>
         <span class="logo-text">my<em>DAISY</em></span>
@@ -655,10 +642,9 @@
       <div class="hdr-meta"><strong>Innovation evaluation</strong><br>Horizon Europe · #101181857</div>
     </header>
 
-    <!-- Main -->
     <main>
       <div class="intro">
-        <h1>Evaluate your<br><em style="font-style:italic;color:var(--green)">innovation</em></h1>
+        <h1>Evaluate your<br><em style="font-style:italic;color:#C0392B">innovation</em></h1>
         <p>Rate your innovation across three themes using the sliders. Each question is answered twice — for its
           <strong>current potential</strong> and its <strong>potential by 2050</strong>. Slide from 0 (none) to 100
           (very high). If a question feels irrelevant, leave it at 50.
@@ -776,9 +762,9 @@
       <!-- BIODIVERSITY -->
       <div class="card" id="c1">
         <div class="card-head">
-          <div class="theme-badge" style="background:var(--green-light)">🌿</div>
+          <div class="theme-badge" style="background:#FAECE7">🌿</div>
           <div>
-            <div class="theme-name" style="color:var(--green-dark)">Biodiversity</div>
+            <div class="theme-name" style="color:#7B1A0D">Biodiversity</div>
             <div class="theme-sub">How the innovation affects the variety of life and ecosystems</div>
           </div>
           <button class="tip-btn" onclick="td('d1')">What does this mean?</button>
@@ -791,7 +777,7 @@
         </div>
         <div class="qs">
           <div class="q">
-            <div class="q-tag" style="color:var(--green)">Genetic diversity</div>
+            <div class="q-tag" style="color:#C0392B">Genetic diversity</div>
             <div class="q-text">Could this innovation help preserve or increase the genetic variety within plant and
               animal populations?</div>
             <div class="pair">
@@ -810,7 +796,7 @@
             </div>
           </div>
           <div class="q">
-            <div class="q-tag" style="color:var(--green)">Species diversity</div>
+            <div class="q-tag" style="color:#C0392B">Species diversity</div>
             <div class="q-text">Could this innovation lead to more species — or protect existing ones — in the affected
               area?</div>
             <div class="pair">
@@ -829,7 +815,7 @@
             </div>
           </div>
           <div class="q">
-            <div class="q-tag" style="color:var(--green)">Habitat diversity</div>
+            <div class="q-tag" style="color:#C0392B">Habitat diversity</div>
             <div class="q-text">Could this innovation create or restore a greater variety of natural habitats (e.g.
               wetlands, meadows, forests)?</div>
             <div class="pair">
@@ -848,7 +834,7 @@
             </div>
           </div>
           <div class="q">
-            <div class="q-tag" style="color:var(--green)">Ecosystem functions</div>
+            <div class="q-tag" style="color:#C0392B">Ecosystem functions</div>
             <div class="q-text">Could this innovation strengthen how ecosystems function together — like pollination,
               water filtering, or carbon storage?</div>
             <div class="pair">
@@ -993,19 +979,17 @@
   </div>
 
   <script>
-    // Data
     const V = { eq1n: 50, eq1f: 50, eq2n: 50, eq2f: 50, eq3n: 50, eq3f: 50, eq4n: 50, eq4f: 50, bi1n: 50, bi1f: 50, bi2n: 50, bi2f: 50, bi3n: 50, bi3f: 50, bi4n: 50, bi4f: 50, tr1n: 50, tr1f: 50, tr2n: 50, tr2f: 50, tr3n: 50, tr3f: 50 };
 
-    // Spokes: 11 sub-dimensions
     const SPOKES = [
       { n: 'eq1', lbl: 'Procedural\nequity', c: '#D85A30' },
       { n: 'eq2', lbl: 'Distributive\nequity', c: '#D85A30' },
       { n: 'eq3', lbl: 'Recognitional\nequity', c: '#D85A30' },
       { n: 'eq4', lbl: 'Capabilities\nequity', c: '#D85A30' },
-      { n: 'bi1', lbl: 'Genetic\ndiversity', c: '#1D9E75' },
-      { n: 'bi2', lbl: 'Species\ndiversity', c: '#1D9E75' },
-      { n: 'bi3', lbl: 'Habitat\ndiversity', c: '#1D9E75' },
-      { n: 'bi4', lbl: 'Ecosystem\nfunctions', c: '#1D9E75' },
+      { n: 'bi1', lbl: 'Genetic\ndiversity', c: '#C0392B' },
+      { n: 'bi2', lbl: 'Species\ndiversity', c: '#C0392B' },
+      { n: 'bi3', lbl: 'Habitat\ndiversity', c: '#C0392B' },
+      { n: 'bi4', lbl: 'Ecosystem\nfunctions', c: '#C0392B' },
       { n: 'tr1', lbl: 'Personal\nlevel', c: '#534AB7' },
       { n: 'tr2', lbl: 'Practical\nlevel', c: '#534AB7' },
       { n: 'tr3', lbl: 'Political\nlevel', c: '#534AB7' },
@@ -1066,7 +1050,6 @@
       });
     }
 
-    // Slider handler
     function sl(inp) {
       const k = inp.dataset.k, v = parseInt(inp.value);
       V[k] = v;
@@ -1078,10 +1061,8 @@
       updateRadar(); updateProg();
     }
 
-    // Def toggle
     function td(id) { document.getElementById(id).classList.toggle('open') }
 
-    // Steps
     let cur = 0;
     const STEPS = ['c0', 'c1', 'c2'];
     const STEPLBLS = ['Equity', 'Biodiversity', 'Transformation'];
@@ -1112,13 +1093,11 @@
     }
 
     function submitForm() {
-      // Collect all values as a flat object — replace this with your PHP form POST
       const payload = Object.assign({}, V);
       console.log('Submission payload:', JSON.stringify(payload, null, 2));
       alert('Submitted! In production this POSTs to your PHP handler.\n\nPayload logged to console.');
     }
 
-    // Init
     buildSkeleton(); updateRadar(); updateProg();
   </script>
 </body>
