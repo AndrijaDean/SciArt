@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAISY — Evaluate Your Innovation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1D9E75;--green-dark:#085041;--green-light:#E1F5EE;--green-mid:#5DCAA5;
+  --coral:#D85A30;--coral-light:#FAECE7;--coral-dark:#993C1D;
+  --purple:#534AB7;--purple-light:#EEEDFE;--purple-dark:#26215C;
+  --now:#185FA5;--now-light:#E6F1FB;
+  --fut:#B06D00;--fut-light:#FAEEDA;
+  --ink:#1a1a18;--ink2:#4a4a46;--ink3:#7a7a74;--ink4:#c2c0b6;
+  --bg:#f4f3ef;--surface:#ffffff;
+  --border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.06);
+  --r:10px;--rsm:6px;
+}
+html{font-size:16px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;min-height:100vh}
+
+/* ── Page grid ── */
+.page{
+  display:grid;
+  grid-template-columns:1fr 290px;
+  grid-template-rows:60px 1fr;
+  max-width:1060px;
+  margin:0 auto;
+  min-height:100vh;
+}
+
+/* ── Header ── */
+header{
+  grid-column:1/-1;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;background:var(--surface);
+  border-bottom:1px solid var(--border2);
+}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.logo-text{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ink);letter-spacing:-.02em}
+.logo-text em{font-style:italic;color:var(--green)}
+.hdr-meta{font-size:11px;color:var(--ink3);text-align:right;line-height:1.5}
+.hdr-meta strong{color:var(--ink2);font-weight:500}
+
+/* ── Main ── */
+main{padding:24px 24px 80px;overflow-y:auto}
+
+/* ── Sidebar ── */
+aside{
+  background:var(--surface);border-left:1px solid var(--border2);
+  padding:22px 18px;position:sticky;top:0;
+  height:calc(100vh - 60px);overflow-y:auto;
+  display:flex;flex-direction:column;gap:14px;
+}
+
+/* ── Intro ── */
+.intro{margin-bottom:18px}
+.intro h1{font-family:'DM Serif Display',serif;font-size:24px;font-weight:400;letter-spacing:-.02em;line-height:1.2;margin-bottom:6px}
+.intro p{font-size:12.5px;color:var(--ink2);max-width:560px;line-height:1.65}
+
+/* ── Progress ── */
+.prog-row{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-bottom:4px}
+.prog-row strong{color:var(--ink2);font-weight:500}
+.prog-track{height:3px;background:var(--border2);border-radius:99px;overflow:hidden;margin-bottom:16px}
+.prog-fill{height:100%;background:var(--green);border-radius:99px;width:0%;transition:width .4s}
+
+/* ── Step nav ── */
+.steps{display:flex;gap:5px;margin-bottom:18px}
+.step{
+  flex:1;padding:7px 8px 6px;border:1px solid var(--border);border-radius:var(--rsm);
+  background:var(--surface);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;
+  color:var(--ink3);cursor:pointer;text-align:center;transition:all .18s;
+  display:flex;flex-direction:column;align-items:center;gap:3px
+}
+.step .ico{font-size:14px}
+.step.active{border-color:var(--green);color:var(--green-dark);background:var(--green-light)}
+.step.done{border-color:var(--green-mid);background:var(--bg);color:var(--green-dark)}
+
+/* ── Theme card ── */
+.card{background:var(--surface);border-radius:var(--r);border:1px solid var(--border2);
+  box-shadow:0 1px 3px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.03);
+  overflow:hidden;display:none;margin-bottom:14px}
+.card.on{display:block}
+
+/* Card header */
+.card-head{
+  display:flex;align-items:center;gap:11px;
+  padding:14px 20px 12px;
+  border-bottom:1px solid var(--border2);
+}
+.theme-badge{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.theme-name{font-family:'DM Serif Display',serif;font-size:18px;font-weight:400;letter-spacing:-.01em}
+.theme-sub{font-size:11px;color:var(--ink3);margin-top:1px}
+.tip-btn{
+  margin-left:auto;font-family:'DM Sans',sans-serif;font-size:11px;padding:3px 9px;
+  border-radius:99px;border:1px solid var(--border);background:var(--bg);
+  color:var(--ink3);cursor:pointer;flex-shrink:0;transition:all .15s;white-space:nowrap
+}
+.tip-btn:hover{border-color:var(--ink3);color:var(--ink2)}
+
+/* Definition box */
+.def{
+  margin:0 20px 0;padding:10px 12px;background:var(--bg);border-radius:var(--rsm);
+  border-left:3px solid var(--border);font-size:11px;color:var(--ink3);
+  line-height:1.6;display:none;margin-bottom:-1px;
+}
+.def.open{display:block}
+
+/* ── THE TABLE ── */
+.q-table{width:100%;border-collapse:collapse}
+
+/* Column headers */
+.q-table thead tr th{
+  padding:10px 16px;
+  font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;
+  border-bottom:1px solid var(--border);
+  background:var(--bg);
+}
+.q-table thead tr th:first-child{
+  text-align:left;color:var(--ink3);width:38%;
+}
+.q-table thead tr th.col-now{
+  color:var(--now);text-align:center;width:31%;
+  border-left:1px solid var(--border2);
+}
+.q-table thead tr th.col-fut{
+  color:var(--fut);text-align:center;width:31%;
+  border-left:1px solid var(--border2);
+}
+
+/* Question rows */
+.q-table tbody tr{border-bottom:1px solid var(--border2)}
+.q-table tbody tr:last-child{border-bottom:none}
+.q-table tbody tr:hover td{background:rgba(0,0,0,.012)}
+
+/* Question cell */
+.q-table td.q-cell{
+  padding:14px 16px;
+  vertical-align:top;
+}
+.q-sub{
+  font-size:9px;font-weight:500;text-transform:uppercase;
+  letter-spacing:.08em;margin-bottom:3px;
+}
+.q-text{font-size:12.5px;color:var(--ink);line-height:1.5}
+
+/* Slider cells */
+.q-table td.s-cell{
+  padding:14px 20px;
+  vertical-align:middle;
+  border-left:1px solid var(--border2);
+  text-align:center;
+}
+
+/* ── Track-style slider ── */
+.track-wrap{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  width:100%;
+}
+.track-labels{
+  display:flex;justify-content:space-between;width:100%;
+  font-size:9px;color:var(--ink4);letter-spacing:.02em;
+}
+.track-slider{
+  width:100%;display:flex;align-items:center;
+}
+
+/* Normal filled range slider */
+input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:6px;border-radius:99px;
+  cursor:pointer;outline:none;margin:0;
+  border:none;
+}
+input[type=range].nr{
+  background:linear-gradient(to right, var(--now) 50%, #dde4ed 50%);
+}
+input[type=range].fr{
+  background:linear-gradient(to right, var(--fut) 50%, #ede8dc 50%);
+}
+input[type=range].nr::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--now);
+  border:2px solid #fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.2);
+  cursor:pointer;transition:transform .1s;
+}
+input[type=range].nr:hover::-webkit-slider-thumb{transform:scale(1.1)}
+input[type=range].fr::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--fut);
+  border:2px solid #fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.2);
+  cursor:pointer;transition:transform .1s;
+}
+input[type=range].fr:hover::-webkit-slider-thumb{transform:scale(1.1)}
+
+/* Firefox */
+input[type=range]::-moz-range-track{height:6px;border-radius:99px;background:#e0ddd6}
+input[type=range].nr::-moz-range-progress{background:var(--now);border-radius:99px}
+input[type=range].nr::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--now);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+input[type=range].fr::-moz-range-progress{background:var(--fut);border-radius:99px}
+input[type=range].fr::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--fut);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+
+.track-val{
+  font-size:11px;font-weight:500;
+  padding:1px 6px;border-radius:4px;
+  min-width:30px;text-align:center;
+}
+.track-val.nv{color:var(--now);background:var(--now-light)}
+.track-val.fv{color:var(--fut);background:var(--fut-light)}
+
+/* ── Form nav ── */
+.fnav{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:14px;padding-top:14px;border-top:1px solid var(--border2);
+}
+.btn-back{font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 18px;border-radius:var(--rsm);border:1px solid var(--border);background:var(--surface);color:var(--ink2);cursor:pointer;transition:all .15s}
+.btn-back:hover{border-color:var(--ink3);color:var(--ink)}
+.btn-next{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:9px 22px;border-radius:var(--rsm);border:none;background:var(--green);color:#fff;cursor:pointer;transition:all .15s}
+.btn-next:hover{background:var(--green-dark)}
+.nav-hint{font-size:11px;color:var(--ink3)}
+
+/* ── Submit ── */
+.submit{display:none;background:var(--surface);border-radius:var(--r);border:1px solid var(--border2);
+  box-shadow:0 1px 3px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.03);
+  padding:30px;text-align:center;margin-bottom:14px}
+.submit.on{display:block}
+.submit h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;margin-bottom:7px;letter-spacing:-.01em}
+.submit p{font-size:13px;color:var(--ink2);margin-bottom:18px}
+.btn-sub{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;padding:11px 30px;border-radius:var(--rsm);border:none;background:var(--green);color:#fff;cursor:pointer;transition:all .2s}
+.btn-sub:hover{background:var(--green-dark);transform:translateY(-1px)}
+
+/* ── Sidebar radar ── */
+.sb-title{font-family:'DM Serif Display',serif;font-size:15px;font-weight:400;color:var(--ink);letter-spacing:-.01em}
+.radar-wrap{width:100%;aspect-ratio:1}
+.radar-wrap svg{width:100%;height:100%}
+.sb-legend{display:flex;gap:10px;font-size:10px;color:var(--ink3)}
+.leg{display:flex;align-items:center;gap:4px}
+.leg-line{width:14px;height:2px;border-radius:99px}
+.leg-dash{height:0;border-top:2px dashed var(--now)}
+.dlist{display:flex;flex-direction:column;gap:4px}
+.drow{display:grid;grid-template-columns:16px 1fr auto auto;align-items:center;gap:5px;font-size:11px}
+.drow.hdr{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--ink4);margin-bottom:1px}
+.dname{color:var(--ink2)}
+.dnow{color:var(--now);font-weight:500;min-width:22px;text-align:right}
+.dfut{color:var(--fut);font-weight:500;min-width:22px;text-align:right}
+
+@media(max-width:700px){
+  .page{grid-template-columns:1fr;grid-template-rows:56px 1fr}
+  aside{display:none}
+  main{padding:14px 12px 60px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- Header -->
+<header>
+  <a href="https://mydaisy.eu" class="logo" target="_blank">
+    <svg width="30" height="30" viewBox="0 0 36 36" fill="none">
+      <circle cx="18" cy="18" r="5" fill="#1D9E75"/>
+      <ellipse cx="18" cy="7" rx="3.5" ry="6.5" fill="#5DCAA5" opacity=".8"/>
+      <ellipse cx="18" cy="29" rx="3.5" ry="6.5" fill="#5DCAA5" opacity=".8"/>
+      <ellipse cx="7" cy="18" rx="6.5" ry="3.5" fill="#5DCAA5" opacity=".8"/>
+      <ellipse cx="29" cy="18" rx="6.5" ry="3.5" fill="#5DCAA5" opacity=".8"/>
+      <ellipse cx="10.5" cy="10.5" rx="3.5" ry="6.5" transform="rotate(-45 10.5 10.5)" fill="#9FE1CB" opacity=".7"/>
+      <ellipse cx="25.5" cy="10.5" rx="3.5" ry="6.5" transform="rotate(45 25.5 10.5)" fill="#9FE1CB" opacity=".7"/>
+      <ellipse cx="10.5" cy="25.5" rx="3.5" ry="6.5" transform="rotate(45 10.5 25.5)" fill="#9FE1CB" opacity=".7"/>
+      <ellipse cx="25.5" cy="25.5" rx="3.5" ry="6.5" transform="rotate(-45 25.5 25.5)" fill="#9FE1CB" opacity=".7"/>
+    </svg>
+    <span class="logo-text">my<em>DAISY</em></span>
+  </a>
+  <div class="hdr-meta"><strong>Innovation evaluation</strong><br>Horizon Europe · #101181857</div>
+</header>
+
+<!-- Main -->
+<main>
+
+  <div class="intro">
+    <h1>Evaluate your <em style="font-style:italic;color:var(--green)">innovation</em></h1>
+    <p>Rate your innovation across three themes. Each question gets two ratings — <strong style="color:var(--now)">Current potential</strong> and <strong style="color:var(--fut)">Potential by 2050</strong>. Drag the marker on each line. If a question feels irrelevant, leave it in the middle.</p>
+  </div>
+
+  <div class="prog-row"><span id="ptxt">Step 1 of 3 — Equity</span><strong id="ppct">0%</strong></div>
+  <div class="prog-track"><div class="prog-fill" id="pfill"></div></div>
+
+  <div class="steps">
+    <button class="step active" id="sb0" onclick="go(0)"><span class="ico">⚖️</span>Equity</button>
+    <button class="step" id="sb1" onclick="go(1)"><span class="ico">🌿</span>Biodiversity</button>
+    <button class="step" id="sb2" onclick="go(2)"><span class="ico">🔄</span>Transformation</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- EQUITY                                  -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="card on" id="c0">
+    <div class="card-head">
+      <div class="theme-badge" style="background:var(--coral-light)">⚖️</div>
+      <div>
+        <div class="theme-name" style="color:var(--coral-dark)">Equity</div>
+        <div class="theme-sub">Fairness, inclusion, and justice in how change is shared</div>
+      </div>
+      <button class="tip-btn" onclick="td('d0')">What does this mean?</button>
+    </div>
+    <div class="def" id="d0">
+      <strong>Equity</strong> refers to justice and fairness in how decisions are made, how benefits and burdens are shared, and how people can participate in shaping change. It includes <em>procedural</em> equity (fair voice), <em>distributive</em> equity (fair sharing of benefits), <em>recognitional</em> equity (valuing different identities), and <em>capabilities</em> equity (freedom and skills to act).
+      <br><em style="font-size:10px">Sources: EEA, 2024; Langemeyer &amp; Connolly, 2020; Wijsman &amp; Berbés-Blázquez, 2022</em>
+    </div>
+
+    <table class="q-table">
+      <thead>
+        <tr>
+          <th>Question</th>
+          <th class="col-now">● Current potential</th>
+          <th class="col-fut">● Potential by 2050</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="q-cell">
+            <div class="q-sub" style="color:var(--coral)">Procedural equity</div>
+            <div class="q-text">Can this innovation help people trust and engage with the institutions that make decisions about their environment?</div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="eq1n" oninput="sl(this)"></div>
+              <span class="track-val nv" id="v-eq1n">50</span>
+            </div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="eq1f" oninput="sl(this)"></div>
+              <span class="track-val fv" id="v-eq1f">50</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="q-cell">
+            <div class="q-sub" style="color:var(--coral)">Distributive equity</div>
+            <div class="q-text">Does this innovation help ensure that environmental benefits (clean air, green space, water) reach people who have historically been left out?</div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="eq2n" oninput="sl(this)"></div>
+              <span class="track-val nv" id="v-eq2n">50</span>
+            </div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="eq2f" oninput="sl(this)"></div>
+              <span class="track-val fv" id="v-eq2f">50</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="q-cell">
+            <div class="q-sub" style="color:var(--coral)">Recognitional equity</div>
+            <div class="q-text">Does this innovation give a louder voice and greater recognition to communities that are often ignored in decision-making?</div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="eq3n" oninput="sl(this)"></div>
+              <span class="track-val nv" id="v-eq3n">50</span>
+            </div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="eq3f" oninput="sl(this)"></div>
+              <span class="track-val fv" id="v-eq3f">50</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="q-cell">
+            <div class="q-sub" style="color:var(--coral)">Capabilities equity</div>
+            <div class="q-text">Does this innovation give people the skills, tools, or confidence they need to act on environmental and social challenges?</div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="eq4n" oninput="sl(this)"></div>
+              <span class="track-val nv" id="v-eq4n">50</span>
+            </div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="eq4f" oninput="sl(this)"></div>
+              <span class="track-val fv" id="v-eq4f">50</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- BIODIVERSITY                            -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="card" id="c1">
+    <div class="card-head">
+      <div class="theme-badge" style="background:var(--green-light)">🌿</div>
+      <div>
+        <div class="theme-name" style="color:var(--green-dark)">Biodiversity</div>
+        <div class="theme-sub">How the innovation affects the variety of life and ecosystems</div>
+      </div>
+      <button class="tip-btn" onclick="td('d1')">What does this mean?</button>
+    </div>
+    <div class="def" id="d1">
+      <strong>Biodiversity</strong> is the variety of life on Earth — the differences within species, between species, and across habitats and ecosystems. It sustains the health of the planet and provides essential services such as food, clean water, and climate stability.
+      <br><em style="font-size:10px">Source: IPBES, 2024</em>
+    </div>
+
+    <table class="q-table">
+      <thead>
+        <tr>
+          <th>Question</th>
+          <th class="col-now">● Current potential</th>
+          <th class="col-fut">● Potential by 2050</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="q-cell">
+            <div class="q-sub" style="color:var(--green)">Genetic diversity</div>
+            <div class="q-text">Could this innovation help preserve or increase the genetic variety within plant and animal populations?</div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="bi1n" oninput="sl(this)"></div>
+              <span class="track-val nv" id="v-bi1n">50</span>
+            </div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="bi1f" oninput="sl(this)"></div>
+              <span class="track-val fv" id="v-bi1f">50</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="q-cell">
+            <div class="q-sub" style="color:var(--green)">Species diversity</div>
+            <div class="q-text">Could this innovation lead to more species — or protect existing ones — in the affected area?</div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="bi2n" oninput="sl(this)"></div>
+              <span class="track-val nv" id="v-bi2n">50</span>
+            </div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="bi2f" oninput="sl(this)"></div>
+              <span class="track-val fv" id="v-bi2f">50</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="q-cell">
+            <div class="q-sub" style="color:var(--green)">Habitat diversity</div>
+            <div class="q-text">Could this innovation create or restore a greater variety of natural habitats (e.g. wetlands, meadows, forests)?</div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="bi3n" oninput="sl(this)"></div>
+              <span class="track-val nv" id="v-bi3n">50</span>
+            </div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="bi3f" oninput="sl(this)"></div>
+              <span class="track-val fv" id="v-bi3f">50</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="q-cell">
+            <div class="q-sub" style="color:var(--green)">Ecosystem functions</div>
+            <div class="q-text">Could this innovation strengthen how ecosystems function together — like pollination, water filtering, or carbon storage?</div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="bi4n" oninput="sl(this)"></div>
+              <span class="track-val nv" id="v-bi4n">50</span>
+            </div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="bi4f" oninput="sl(this)"></div>
+              <span class="track-val fv" id="v-bi4f">50</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- TRANSFORMATION                          -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="card" id="c2">
+    <div class="card-head">
+      <div class="theme-badge" style="background:var(--purple-light)">🔄</div>
+      <div>
+        <div class="theme-name" style="color:var(--purple-dark)">Transformation</div>
+        <div class="theme-sub">Deep, system-wide change across personal, practical, and political levels</div>
+      </div>
+      <button class="tip-btn" onclick="td('d2')">What does this mean?</button>
+    </div>
+    <div class="def" id="d2">
+      <strong>Transformation</strong> means deep, system-wide social change — new ways of thinking, acting, and organising societies. Innovations can trigger transformation at three levels: the <em>personal</em> (values and mindsets), the <em>practical</em> (new actions and technologies), and the <em>political</em> (institutional and structural change).
+      <br><em style="font-size:10px">Sources: IPBES, 2024; O'Brien, 2018</em>
+    </div>
+
+    <table class="q-table">
+      <thead>
+        <tr>
+          <th>Question</th>
+          <th class="col-now">● Current potential</th>
+          <th class="col-fut">● Potential by 2050</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="q-cell">
+            <div class="q-sub" style="color:var(--purple)">Personal level — mindsets</div>
+            <div class="q-text">Could this innovation genuinely shift how individuals think or feel about sustainability and nature — not just inform, but change values?</div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="tr1n" oninput="sl(this)"></div>
+              <span class="track-val nv" id="v-tr1n">50</span>
+            </div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="tr1f" oninput="sl(this)"></div>
+              <span class="track-val fv" id="v-tr1f">50</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="q-cell">
+            <div class="q-sub" style="color:var(--purple)">Practical level — actions</div>
+            <div class="q-text">Could this innovation spark new behaviours, technologies, or practices that meaningfully address social or environmental problems?</div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="tr2n" oninput="sl(this)"></div>
+              <span class="track-val nv" id="v-tr2n">50</span>
+            </div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="tr2f" oninput="sl(this)"></div>
+              <span class="track-val fv" id="v-tr2f">50</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="q-cell">
+            <div class="q-sub" style="color:var(--purple)">Political level — systems</div>
+            <div class="q-text">Could this innovation influence laws, policies, or institutional norms in ways that support long-term sustainability?</div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="tr3n" oninput="sl(this)"></div>
+              <span class="track-val nv" id="v-tr3n">50</span>
+            </div>
+          </td>
+          <td class="s-cell">
+            <div class="track-wrap">
+              <div class="track-labels"><span>0</span><span>50</span><span>100</span></div>
+              <div class="track-slider"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="tr3f" oninput="sl(this)"></div>
+              <span class="track-val fv" id="v-tr3f">50</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit" id="csub">
+    <h2>Your daisy is ready 🌼</h2>
+    <p>You've answered all 11 questions across both timepoints.<br>Review your diagram on the right, then submit when you're ready.</p>
+    <button class="btn-sub" onclick="submitForm()">Submit evaluation →</button>
+  </div>
+
+  <!-- Nav -->
+  <div class="fnav">
+    <button class="btn-back" id="bback" onclick="goBack()" style="visibility:hidden">← Back</button>
+    <span class="nav-hint" id="nhint">You can return to adjust answers at any time</span>
+    <button class="btn-next" id="bnext" onclick="goNext()">Continue → <span id="nlbl">Biodiversity</span></button>
+  </div>
+
+</main>
+
+<!-- Sidebar -->
+<aside>
+  <div class="sb-title">Your daisy diagram</div>
+  <div class="radar-wrap">
+    <svg id="rsvg" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+      <polygon id="rg25" fill="none" stroke="#e0ddd6" stroke-width=".5" points=""/>
+      <polygon id="rg50" fill="none" stroke="#e0ddd6" stroke-width=".5" points=""/>
+      <polygon id="rg75" fill="none" stroke="#e0ddd6" stroke-width=".5" points=""/>
+      <g id="raxes" stroke="#d8d6cf" stroke-width=".5"></g>
+      <polygon id="pnow" fill="#185FA5" fill-opacity=".13" stroke="#185FA5" stroke-width="1.5" stroke-dasharray="4 3" stroke-opacity=".7" points=""/>
+      <polygon id="pfut" fill="#B06D00" fill-opacity=".15" stroke="#B06D00" stroke-width="2" points=""/>
+      <g id="rlbls" font-size="8" font-family="DM Sans,sans-serif" fill="#8a8a84" text-anchor="middle"></g>
+      <circle cx="130" cy="130" r="2.5" fill="#c2c0b6"/>
+    </svg>
+  </div>
+  <div class="sb-legend">
+    <div class="leg"><div class="leg-line leg-dash"></div><span>Current</span></div>
+    <div class="leg"><div class="leg-line" style="background:var(--fut)"></div><span>By 2050</span></div>
+  </div>
+  <div class="dlist" id="dlist"></div>
+</aside>
+
+</div><!-- /page -->
+
+<script>
+// ── Data ──
+const V={eq1n:50,eq1f:50,eq2n:50,eq2f:50,eq3n:50,eq3f:50,eq4n:50,eq4f:50,
+         bi1n:50,bi1f:50,bi2n:50,bi2f:50,bi3n:50,bi3f:50,bi4n:50,bi4f:50,
+         tr1n:50,tr1f:50,tr2n:50,tr2f:50,tr3n:50,tr3f:50};
+
+// ── Radar ──
+const SPOKES=[
+  {n:'eq1',lbl:'Procedural\nequity',c:'#D85A30'},
+  {n:'eq2',lbl:'Distributive\nequity',c:'#D85A30'},
+  {n:'eq3',lbl:'Recognitional\nequity',c:'#D85A30'},
+  {n:'eq4',lbl:'Capabilities\nequity',c:'#D85A30'},
+  {n:'bi1',lbl:'Genetic\ndiversity',c:'#1D9E75'},
+  {n:'bi2',lbl:'Species\ndiversity',c:'#1D9E75'},
+  {n:'bi3',lbl:'Habitat\ndiversity',c:'#1D9E75'},
+  {n:'bi4',lbl:'Ecosystem\nfunctions',c:'#1D9E75'},
+  {n:'tr1',lbl:'Personal\nlevel',c:'#534AB7'},
+  {n:'tr2',lbl:'Practical\nlevel',c:'#534AB7'},
+  {n:'tr3',lbl:'Political\nlevel',c:'#534AB7'},
+];
+const N=SPOKES.length,CX=130,CY=130,R=85;
+
+function angle(i){return(Math.PI*2*i/N)-Math.PI/2}
+function pt(i,pct){const a=angle(i);return{x:CX+pct*R*Math.cos(a),y:CY+pct*R*Math.sin(a)}}
+function poly(pcts){return pcts.map((p,i)=>{const q=pt(i,p);return q.x+','+q.y}).join(' ')}
+
+function buildSkeleton(){
+  const ax=document.getElementById('raxes');
+  const lb=document.getElementById('rlbls');
+  SPOKES.forEach((s,i)=>{
+    const tip=pt(i,1);
+    const ln=document.createElementNS('http://www.w3.org/2000/svg','line');
+    ln.setAttribute('x1',CX);ln.setAttribute('y1',CY);ln.setAttribute('x2',tip.x);ln.setAttribute('y2',tip.y);
+    ax.appendChild(ln);
+    const lp=pt(i,1.28);
+    const lines=s.lbl.split('\n');
+    const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('x',lp.x);txt.setAttribute('y',lp.y-(lines.length-1)*5);
+    txt.setAttribute('fill',s.c);txt.setAttribute('font-weight','500');
+    const ta=lp.x<CX-8?'end':lp.x>CX+8?'start':'middle';
+    txt.setAttribute('text-anchor',ta);
+    lines.forEach((ln2,li)=>{
+      const ts=document.createElementNS('http://www.w3.org/2000/svg','tspan');
+      ts.setAttribute('x',lp.x);ts.setAttribute('dy',li===0?0:'1.15em');ts.textContent=ln2;
+      txt.appendChild(ts);
+    });
+    lb.appendChild(txt);
+  });
+  [.25,.5,.75].forEach((p,ri)=>{
+    document.getElementById(['rg25','rg50','rg75'][ri]).setAttribute('points',poly(SPOKES.map(()=>p)));
+  });
+}
+
+function updateRadar(){
+  document.getElementById('pnow').setAttribute('points',poly(SPOKES.map(s=>V[s.n+'n']/100)));
+  document.getElementById('pfut').setAttribute('points',poly(SPOKES.map(s=>V[s.n+'f']/100)));
+  updateDelta();
+}
+
+const GROUPS=[
+  {ico:'⚖️',lbl:'Equity',ks:['eq1','eq2','eq3','eq4']},
+  {ico:'🌿',lbl:'Biodiversity',ks:['bi1','bi2','bi3','bi4']},
+  {ico:'🔄',lbl:'Transformation',ks:['tr1','tr2','tr3']},
+];
+function gavg(ks,suf){return Math.round(ks.reduce((s,k)=>s+V[k+suf],0)/ks.length)}
+function updateDelta(){
+  const dl=document.getElementById('dlist');
+  dl.innerHTML='<div class="drow hdr"><span></span><span>Theme</span><span class="dnow">Now</span><span class="dfut">2050</span></div>';
+  GROUPS.forEach(g=>{
+    const r=document.createElement('div');r.className='drow';
+    r.innerHTML=`<span style="font-size:13px">${g.ico}</span><span class="dname">${g.lbl}</span><span class="dnow">${gavg(g.ks,'n')}</span><span class="dfut">${gavg(g.ks,'f')}</span>`;
+    dl.appendChild(r);
+  });
+}
+
+// ── Slider ──
+function sl(inp){
+  const k=inp.dataset.k,v=parseInt(inp.value);
+  V[k]=v;
+  document.getElementById('v-'+k).textContent=v;
+  const pct=v+'%';
+  const isNow=inp.classList.contains('nr');
+  const filled=isNow?'var(--now)':'var(--fut)';
+  const empty=isNow?'#dde4ed':'#ede8dc';
+  inp.style.background=`linear-gradient(to right,${filled} ${pct},${empty} ${pct})`;
+  updateRadar();updateProg();
+}
+
+// ── Def toggle ──
+function td(id){document.getElementById(id).classList.toggle('open')}
+
+// ── Steps ──
+let cur=0;
+const STEPLBLS=['Equity','Biodiversity','Transformation'];
+const NEXTLBLS=['Biodiversity','Transformation','Review & submit'];
+
+function go(n){
+  [0,1,2].forEach(i=>{
+    document.getElementById('c'+i).classList.toggle('on',i===n);
+    const b=document.getElementById('sb'+i);
+    b.classList.remove('active','done');
+    if(i===n)b.classList.add('active');else if(i<n)b.classList.add('done');
+  });
+  document.getElementById('csub').classList.toggle('on',n===3);
+  document.getElementById('bback').style.visibility=n===0?'hidden':'visible';
+  document.getElementById('bnext').style.display=n===3?'none':'';
+  if(n<3)document.getElementById('nlbl').textContent=NEXTLBLS[n];
+  document.getElementById('ptxt').textContent=n<3?`Step ${n+1} of 3 — ${STEPLBLS[n]}`:'All done!';
+  cur=n;updateProg();window.scrollTo({top:0,behavior:'smooth'});
+}
+function goNext(){if(cur<3)go(cur+1)}
+function goBack(){if(cur>0)go(cur-1)}
+
+function updateProg(){
+  const moved=Object.values(V).filter(v=>v!==50).length;
+  const pct=Math.round(moved/Object.keys(V).length*100);
+  document.getElementById('pfill').style.width=pct+'%';
+  document.getElementById('ppct').textContent=pct+'%';
+}
+
+function submitForm(){
+  console.log('Payload:',JSON.stringify(V,null,2));
+  alert('Submitted!\n\nIn production this POSTs to your PHP handler.\nAll 22 values are logged to the console.');
+}
+
+buildSkeleton();updateRadar();updateProg();
+</script>
+</body>
+</html>
