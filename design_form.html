@@ -1,511 +1,1126 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DAISY — Evaluate Your Innovation</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --green:#1D9E75;--green-dark:#085041;--green-light:#E1F5EE;--green-mid:#5DCAA5;
-  --coral:#D85A30;--coral-light:#FAECE7;--coral-dark:#993C1D;
-  --purple:#534AB7;--purple-light:#EEEDFE;--purple-dark:#26215C;
-  --now:#185FA5;--now-light:#E6F1FB;
-  --fut:#B06D00;--fut-light:#FAEEDA;
-  --ink:#1a1a18;--ink2:#4a4a46;--ink3:#8a8a84;--ink4:#c2c0b6;
-  --bg:#f7f6f2;--surface:#ffffff;
-  --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.05);
-  --r:12px;--rsm:8px;
-}
-html{font-size:16px}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;min-height:100vh}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DAISY — Evaluate Your Innovation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Serif+Display:ital@0;1&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-/* Layout */
-.page{display:grid;grid-template-columns:1fr 300px;grid-template-rows:64px 1fr;max-width:1080px;margin:0 auto;min-height:100vh}
+    :root {
+      --green: #1D9E75;
+      --green-dark: #085041;
+      --green-light: #E1F5EE;
+      --green-mid: #5DCAA5;
+      --coral: #D85A30;
+      --coral-light: #FAECE7;
+      --coral-dark: #993C1D;
+      --purple: #534AB7;
+      --purple-light: #EEEDFE;
+      --purple-dark: #26215C;
+      --now: #185FA5;
+      --now-light: #E6F1FB;
+      --fut: #B06D00;
+      --fut-light: #FAEEDA;
+      --ink: #1a1a18;
+      --ink2: #4a4a46;
+      --ink3: #8a8a84;
+      --ink4: #c2c0b6;
+      --bg: #f7f6f2;
+      --surface: #ffffff;
+      --border: rgba(0, 0, 0, 0.09);
+      --border2: rgba(0, 0, 0, 0.05);
+      --r: 12px;
+      --rsm: 8px;
+    }
 
-/* Header */
-header{
-  grid-column:1/-1;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 28px;background:var(--surface);border-bottom:1px solid var(--border2);
-}
-.logo{display:flex;align-items:center;gap:9px;text-decoration:none}
-.logo-text{font-family:'DM Serif Display',serif;font-size:21px;color:var(--ink);letter-spacing:-.02em}
-.logo-text em{font-style:italic;color:var(--green)}
-.hdr-meta{font-size:11px;color:var(--ink3);text-align:right}
-.hdr-meta strong{color:var(--ink2);font-weight:500}
+    html {
+      font-size: 16px
+    }
 
-/* Main form */
-main{padding:28px 28px 80px;overflow-y:auto}
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      min-height: 100vh
+    }
 
-/* Sidebar */
-aside{
-  background:var(--surface);border-left:1px solid var(--border2);
-  padding:24px 20px;position:sticky;top:0;height:calc(100vh - 64px);
-  overflow-y:auto;display:flex;flex-direction:column;gap:16px
-}
+    /* Layout */
+    .page {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      grid-template-rows: 64px 1fr;
+      max-width: 1080px;
+      margin: 0 auto;
+      min-height: 100vh
+    }
 
-/* Intro */
-.intro{margin-bottom:22px}
-.intro h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;letter-spacing:-.02em;line-height:1.2;margin-bottom:7px}
-.intro p{font-size:13px;color:var(--ink2);max-width:500px;line-height:1.65}
+    /* Header */
+    header {
+      grid-column: 1/-1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border2);
+    }
 
-/* Progress */
-.prog-row{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-bottom:5px}
-.prog-row strong{color:var(--ink2);font-weight:500}
-.prog-track{height:3px;background:var(--border2);border-radius:99px;overflow:hidden;margin-bottom:18px}
-.prog-fill{height:100%;background:var(--green);border-radius:99px;width:0%;transition:width .4s}
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none
+    }
 
-/* Step nav */
-.steps{display:flex;gap:5px;margin-bottom:22px}
-.step{
-  flex:1;padding:8px 8px 7px;border:1px solid var(--border);border-radius:var(--rsm);
-  background:var(--surface);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;
-  color:var(--ink3);cursor:pointer;text-align:center;transition:all .18s;
-  display:flex;flex-direction:column;align-items:center;gap:3px
-}
-.step .ico{font-size:15px}
-.step.active{border-color:var(--green);color:var(--green-dark);background:var(--green-light)}
-.step.done{border-color:var(--green-mid);background:var(--bg);color:var(--green-dark)}
+    .logo-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 21px;
+      color: var(--ink);
+      letter-spacing: -.02em
+    }
 
-/* Theme card */
-.card{background:var(--surface);border-radius:var(--r);border:1px solid var(--border2);box-shadow:0 1px 3px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.04);overflow:hidden;display:none}
-.card.on{display:block}
+    .logo-text em {
+      font-style: italic;
+      color: var(--green)
+    }
 
-.card-head{display:flex;align-items:flex-start;gap:12px;padding:18px 22px 14px}
-.theme-badge{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.theme-name{font-family:'DM Serif Display',serif;font-size:19px;font-weight:400;letter-spacing:-.01em}
-.theme-sub{font-size:11px;color:var(--ink3);margin-top:2px;line-height:1.4}
-.tip-btn{
-  margin-left:auto;font-family:'DM Sans',sans-serif;font-size:11px;padding:4px 10px;
-  border-radius:99px;border:1px solid var(--border);background:var(--bg);
-  color:var(--ink3);cursor:pointer;flex-shrink:0;transition:all .15s;white-space:nowrap
-}
-.tip-btn:hover{border-color:var(--ink3);color:var(--ink2)}
+    .hdr-meta {
+      font-size: 11px;
+      color: var(--ink3);
+      text-align: right
+    }
 
-.def{
-  margin:0 22px 14px;padding:11px 13px;background:var(--bg);border-radius:var(--rsm);
-  border-left:3px solid var(--border);font-size:11px;color:var(--ink3);line-height:1.6;display:none
-}
-.def.open{display:block}
+    .hdr-meta strong {
+      color: var(--ink2);
+      font-weight: 500
+    }
 
-/* Questions */
-.qs{padding:0 22px 22px}
-.q{padding:14px 0;border-top:1px solid var(--border2)}
-.q:first-child{border-top:none;padding-top:0}
-.q-tag{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--ink4);margin-bottom:4px}
-.q-text{font-size:13px;color:var(--ink);line-height:1.55;margin-bottom:12px}
+    /* Main form */
+    main {
+      padding: 28px 28px 80px;
+      overflow-y: auto
+    }
 
-.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.pcol-label{
-  font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;
-  margin-bottom:5px;display:flex;align-items:center;gap:4px
-}
-.dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
-.now-lbl{color:var(--now)}
-.fut-lbl{color:var(--fut)}
+    /* Sidebar */
+    aside {
+      background: var(--surface);
+      border-left: 1px solid var(--border2);
+      padding: 24px 20px;
+      position: sticky;
+      top: 0;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px
+    }
 
-.srow{display:flex;align-items:center;gap:7px}
-.sval{font-size:12px;font-weight:500;min-width:26px;text-align:right}
-.now-sval{color:var(--now)}
-.fut-sval{color:var(--fut)}
+    /* Intro */
+    .intro {
+      margin-bottom: 22px
+    }
 
-input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:4px;border-radius:99px;outline:none;cursor:pointer;background:var(--border2)}
-input[type=range].nr::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--now);border:2px solid #fff;box-shadow:0 0 0 1px var(--now);cursor:pointer}
-input[type=range].fr::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--fut);border:2px solid #fff;box-shadow:0 0 0 1px var(--fut);cursor:pointer}
-input[type=range].nr{background:linear-gradient(to right,var(--now) 50%,var(--border2) 50%)}
-input[type=range].fr{background:linear-gradient(to right,var(--fut) 50%,var(--border2) 50%)}
+    .intro h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: -.02em;
+      line-height: 1.2;
+      margin-bottom: 7px
+    }
 
-/* Nav */
-.fnav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--border2)}
-.btn-back{font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 18px;border-radius:var(--rsm);border:1px solid var(--border);background:var(--surface);color:var(--ink2);cursor:pointer;transition:all .15s}
-.btn-back:hover{border-color:var(--ink3);color:var(--ink)}
-.btn-next{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:9px 22px;border-radius:var(--rsm);border:none;background:var(--green);color:#fff;cursor:pointer;transition:all .15s}
-.btn-next:hover{background:var(--green-dark)}
-.nav-hint{font-size:11px;color:var(--ink3)}
+    .intro p {
+      font-size: 13px;
+      color: var(--ink2);
+      max-width: 500px;
+      line-height: 1.65
+    }
 
-/* Submit */
-.submit{display:none;background:var(--surface);border-radius:var(--r);border:1px solid var(--border2);box-shadow:0 1px 3px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.04);padding:32px;text-align:center}
-.submit.on{display:block}
-.submit h2{font-family:'DM Serif Display',serif;font-size:24px;font-weight:400;margin-bottom:8px;letter-spacing:-.01em}
-.submit p{font-size:13px;color:var(--ink2);margin-bottom:20px}
-.btn-sub{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;padding:12px 32px;border-radius:var(--rsm);border:none;background:var(--green);color:#fff;cursor:pointer;transition:all .2s}
-.btn-sub:hover{background:var(--green-dark);transform:translateY(-1px)}
+    /* Progress */
+    .prog-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--ink3);
+      margin-bottom: 5px
+    }
 
-/* Sidebar */
-.sb-title{font-family:'DM Serif Display',serif;font-size:16px;font-weight:400;color:var(--ink);letter-spacing:-.01em}
-.radar-wrap{width:100%;aspect-ratio:1}
-.radar-wrap svg{width:100%;height:100%}
-.sb-legend{display:flex;gap:12px;font-size:10px;color:var(--ink3)}
-.leg{display:flex;align-items:center;gap:5px}
-.leg-line{width:16px;height:2px;border-radius:99px}
-.leg-dash{height:0;border-top:2px dashed var(--now)}
+    .prog-row strong {
+      color: var(--ink2);
+      font-weight: 500
+    }
 
-.dlist{display:flex;flex-direction:column;gap:5px}
-.drow{display:grid;grid-template-columns:18px 1fr auto auto;align-items:center;gap:5px;font-size:11px}
-.drow.hdr{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--ink4);margin-bottom:1px}
-.dname{color:var(--ink2)}
-.dnow{color:var(--now);font-weight:500;min-width:22px;text-align:right}
-.dfut{color:var(--fut);font-weight:500;min-width:22px;text-align:right}
+    .prog-track {
+      height: 3px;
+      background: var(--border2);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 18px
+    }
 
-@media(max-width:700px){
-  .page{grid-template-columns:1fr;grid-template-rows:56px 1fr}
-  aside{display:none}
-  main{padding:16px 16px 70px}
-  .pair{grid-template-columns:1fr}
-}
-</style>
+    .prog-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 99px;
+      width: 0%;
+      transition: width .4s
+    }
+
+    /* Step nav */
+    .steps {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 22px
+    }
+
+    .step {
+      flex: 1;
+      padding: 8px 8px 7px;
+      border: 1px solid var(--border);
+      border-radius: var(--rsm);
+      background: var(--surface);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ink3);
+      cursor: pointer;
+      text-align: center;
+      transition: all .18s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px
+    }
+
+    .step .ico {
+      font-size: 15px
+    }
+
+    .step.active {
+      border-color: var(--green);
+      color: var(--green-dark);
+      background: var(--green-light)
+    }
+
+    .step.done {
+      border-color: var(--green-mid);
+      background: var(--bg);
+      color: var(--green-dark)
+    }
+
+    /* Theme card */
+    .card {
+      background: var(--surface);
+      border-radius: var(--r);
+      border: 1px solid var(--border2);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .05), 0 4px 14px rgba(0, 0, 0, .04);
+      overflow: hidden;
+      display: none
+    }
+
+    .card.on {
+      display: block
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 18px 22px 14px
+    }
+
+    .theme-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0
+    }
+
+    .theme-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 19px;
+      font-weight: 400;
+      letter-spacing: -.01em
+    }
+
+    .theme-sub {
+      font-size: 11px;
+      color: var(--ink3);
+      margin-top: 2px;
+      line-height: 1.4
+    }
+
+    .tip-btn {
+      margin-left: auto;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--ink3);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all .15s;
+      white-space: nowrap
+    }
+
+    .tip-btn:hover {
+      border-color: var(--ink3);
+      color: var(--ink2)
+    }
+
+    .def {
+      margin: 0 22px 14px;
+      padding: 11px 13px;
+      background: var(--bg);
+      border-radius: var(--rsm);
+      border-left: 3px solid var(--border);
+      font-size: 11px;
+      color: var(--ink3);
+      line-height: 1.6;
+      display: none
+    }
+
+    .def.open {
+      display: block
+    }
+
+    /* Questions */
+    .qs {
+      padding: 0 22px 22px
+    }
+
+    .q {
+      padding: 14px 0;
+      border-top: 1px solid var(--border2)
+    }
+
+    .q:first-child {
+      border-top: none;
+      padding-top: 0
+    }
+
+    .q-tag {
+      font-size: 9px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--ink4);
+      margin-bottom: 4px
+    }
+
+    .q-text {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.55;
+      margin-bottom: 12px
+    }
+
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px
+    }
+
+    .pcol-label {
+      font-size: 9px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 4px
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0
+    }
+
+    .now-lbl {
+      color: var(--now)
+    }
+
+    .fut-lbl {
+      color: var(--fut)
+    }
+
+    .srow {
+      display: flex;
+      align-items: center;
+      gap: 7px
+    }
+
+    .sval {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 26px;
+      text-align: right
+    }
+
+    .now-sval {
+      color: var(--now)
+    }
+
+    .fut-sval {
+      color: var(--fut)
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      flex: 1;
+      height: 4px;
+      border-radius: 99px;
+      outline: none;
+      cursor: pointer;
+      background: var(--border2)
+    }
+
+    input[type=range].nr::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--now);
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px var(--now);
+      cursor: pointer
+    }
+
+    input[type=range].fr::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--fut);
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px var(--fut);
+      cursor: pointer
+    }
+
+    input[type=range].nr {
+      background: linear-gradient(to right, var(--now) 50%, var(--border2) 50%)
+    }
+
+    input[type=range].fr {
+      background: linear-gradient(to right, var(--fut) 50%, var(--border2) 50%)
+    }
+
+    /* Nav */
+    .fnav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border2)
+    }
+
+    .btn-back {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      padding: 9px 18px;
+      border-radius: var(--rsm);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink2);
+      cursor: pointer;
+      transition: all .15s
+    }
+
+    .btn-back:hover {
+      border-color: var(--ink3);
+      color: var(--ink)
+    }
+
+    .btn-next {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 9px 22px;
+      border-radius: var(--rsm);
+      border: none;
+      background: var(--green);
+      color: #fff;
+      cursor: pointer;
+      transition: all .15s
+    }
+
+    .btn-next:hover {
+      background: var(--green-dark)
+    }
+
+    .nav-hint {
+      font-size: 11px;
+      color: var(--ink3)
+    }
+
+    /* Submit */
+    .submit {
+      display: none;
+      background: var(--surface);
+      border-radius: var(--r);
+      border: 1px solid var(--border2);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .05), 0 4px 14px rgba(0, 0, 0, .04);
+      padding: 32px;
+      text-align: center
+    }
+
+    .submit.on {
+      display: block
+    }
+
+    .submit h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 8px;
+      letter-spacing: -.01em
+    }
+
+    .submit p {
+      font-size: 13px;
+      color: var(--ink2);
+      margin-bottom: 20px
+    }
+
+    .btn-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 12px 32px;
+      border-radius: var(--rsm);
+      border: none;
+      background: var(--green);
+      color: #fff;
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .btn-sub:hover {
+      background: var(--green-dark);
+      transform: translateY(-1px)
+    }
+
+    /* Sidebar */
+    .sb-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: -.01em
+    }
+
+    .radar-wrap {
+      width: 100%;
+      aspect-ratio: 1
+    }
+
+    .radar-wrap svg {
+      width: 100%;
+      height: 100%
+    }
+
+    .sb-legend {
+      display: flex;
+      gap: 12px;
+      font-size: 10px;
+      color: var(--ink3)
+    }
+
+    .leg {
+      display: flex;
+      align-items: center;
+      gap: 5px
+    }
+
+    .leg-line {
+      width: 16px;
+      height: 2px;
+      border-radius: 99px
+    }
+
+    .leg-dash {
+      height: 0;
+      border-top: 2px dashed var(--now)
+    }
+
+    .dlist {
+      display: flex;
+      flex-direction: column;
+      gap: 5px
+    }
+
+    .drow {
+      display: grid;
+      grid-template-columns: 18px 1fr auto auto;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px
+    }
+
+    .drow.hdr {
+      font-size: 9px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--ink4);
+      margin-bottom: 1px
+    }
+
+    .dname {
+      color: var(--ink2)
+    }
+
+    .dnow {
+      color: var(--now);
+      font-weight: 500;
+      min-width: 22px;
+      text-align: right
+    }
+
+    .dfut {
+      color: var(--fut);
+      font-weight: 500;
+      min-width: 22px;
+      text-align: right
+    }
+
+    @media(max-width:700px) {
+      .page {
+        grid-template-columns: 1fr;
+        grid-template-rows: 56px 1fr
+      }
+
+      aside {
+        display: none
+      }
+
+      main {
+        padding: 16px 16px 70px
+      }
+
+      .pair {
+        grid-template-columns: 1fr
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="page">
+  <div class="page">
 
-<!-- Header -->
-<header>
-  <a href="https://mydaisy.eu" class="logo" target="_blank">
-    <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
-      <circle cx="18" cy="18" r="5" fill="#1D9E75"/>
-      <ellipse cx="18" cy="7" rx="3.5" ry="6.5" fill="#5DCAA5" opacity=".8"/>
-      <ellipse cx="18" cy="29" rx="3.5" ry="6.5" fill="#5DCAA5" opacity=".8"/>
-      <ellipse cx="7" cy="18" rx="6.5" ry="3.5" fill="#5DCAA5" opacity=".8"/>
-      <ellipse cx="29" cy="18" rx="6.5" ry="3.5" fill="#5DCAA5" opacity=".8"/>
-      <ellipse cx="10.5" cy="10.5" rx="3.5" ry="6.5" transform="rotate(-45 10.5 10.5)" fill="#9FE1CB" opacity=".7"/>
-      <ellipse cx="25.5" cy="10.5" rx="3.5" ry="6.5" transform="rotate(45 25.5 10.5)" fill="#9FE1CB" opacity=".7"/>
-      <ellipse cx="10.5" cy="25.5" rx="3.5" ry="6.5" transform="rotate(45 10.5 25.5)" fill="#9FE1CB" opacity=".7"/>
-      <ellipse cx="25.5" cy="25.5" rx="3.5" ry="6.5" transform="rotate(-45 25.5 25.5)" fill="#9FE1CB" opacity=".7"/>
-    </svg>
-    <span class="logo-text">my<em>DAISY</em></span>
-  </a>
-  <div class="hdr-meta"><strong>Innovation evaluation</strong><br>Horizon Europe · #101181857</div>
-</header>
+    <!-- Header -->
+    <header>
+      <a href="https://mydaisy.eu" class="logo" target="_blank">
+        <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="18" r="5" fill="#1D9E75" />
+          <ellipse cx="18" cy="7" rx="3.5" ry="6.5" fill="#5DCAA5" opacity=".8" />
+          <ellipse cx="18" cy="29" rx="3.5" ry="6.5" fill="#5DCAA5" opacity=".8" />
+          <ellipse cx="7" cy="18" rx="6.5" ry="3.5" fill="#5DCAA5" opacity=".8" />
+          <ellipse cx="29" cy="18" rx="6.5" ry="3.5" fill="#5DCAA5" opacity=".8" />
+          <ellipse cx="10.5" cy="10.5" rx="3.5" ry="6.5" transform="rotate(-45 10.5 10.5)" fill="#9FE1CB"
+            opacity=".7" />
+          <ellipse cx="25.5" cy="10.5" rx="3.5" ry="6.5" transform="rotate(45 25.5 10.5)" fill="#9FE1CB" opacity=".7" />
+          <ellipse cx="10.5" cy="25.5" rx="3.5" ry="6.5" transform="rotate(45 10.5 25.5)" fill="#9FE1CB" opacity=".7" />
+          <ellipse cx="25.5" cy="25.5" rx="3.5" ry="6.5" transform="rotate(-45 25.5 25.5)" fill="#9FE1CB"
+            opacity=".7" />
+        </svg>
+        <span class="logo-text">my<em>DAISY</em></span>
+      </a>
+      <div class="hdr-meta"><strong>Innovation evaluation</strong><br>Horizon Europe · #101181857</div>
+    </header>
 
-<!-- Main -->
-<main>
-  <div class="intro">
-    <h1>Evaluate your<br><em style="font-style:italic;color:var(--green)">innovation</em></h1>
-    <p>Rate your innovation across three themes using the sliders. Each question is answered twice — for its <strong>current potential</strong> and its <strong>potential by 2050</strong>. Slide from 0 (none) to 100 (very high). If a question feels irrelevant, leave it at 50.</p>
+    <!-- Main -->
+    <main>
+      <div class="intro">
+        <h1>Evaluate your<br><em style="font-style:italic;color:var(--green)">innovation</em></h1>
+        <p>Rate your innovation across three themes using the sliders. Each question is answered twice — for its
+          <strong>current potential</strong> and its <strong>potential by 2050</strong>. Slide from 0 (none) to 100
+          (very high). If a question feels irrelevant, leave it at 50.
+        </p>
+      </div>
+
+      <div class="prog-row"><span id="ptxt">Step 1 of 3 — Equity</span><strong id="ppct">0%</strong></div>
+      <div class="prog-track">
+        <div class="prog-fill" id="pfill"></div>
+      </div>
+
+      <div class="steps">
+        <button class="step active" id="sb0" onclick="go(0)"><span class="ico">⚖️</span>Equity</button>
+        <button class="step" id="sb1" onclick="go(1)"><span class="ico">🌿</span>Biodiversity</button>
+        <button class="step" id="sb2" onclick="go(2)"><span class="ico">🔄</span>Transformation</button>
+      </div>
+
+      <!-- EQUITY -->
+      <div class="card on" id="c0">
+        <div class="card-head">
+          <div class="theme-badge" style="background:var(--coral-light)">⚖️</div>
+          <div>
+            <div class="theme-name" style="color:var(--coral-dark)">Equity</div>
+            <div class="theme-sub">Fairness, inclusion, and justice in how change is shared</div>
+          </div>
+          <button class="tip-btn" onclick="td('d0')">What does this mean?</button>
+        </div>
+        <div class="def" id="d0">
+          <strong>Equity</strong> refers to justice and fairness in how decisions are made, how benefits and burdens are
+          shared, and how people can participate in shaping change. It includes: <em>procedural</em> equity (fair
+          voice), <em>distributive</em> equity (fair sharing of benefits), <em>recognitional</em> equity (valuing
+          different identities), and <em>capabilities</em> equity (freedom and skills to act).<br><br>
+          <em>Sources: EEA, 2024; Langemeyer &amp; Connolly, 2020; Wijsman &amp; Berbés-Blázquez, 2022</em>
+        </div>
+        <div class="qs">
+          <div class="q">
+            <div class="q-tag" style="color:var(--coral)">Procedural equity</div>
+            <div class="q-text">Can this innovation help people trust and engage with the institutions that make
+              decisions about their environment?</div>
+            <div class="pair">
+              <div>
+                <div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential
+                </div>
+                <div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="eq1n"
+                    oninput="sl(this)"><span class="sval now-sval" id="v-eq1n">50</span></div>
+              </div>
+              <div>
+                <div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050
+                </div>
+                <div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="eq1f"
+                    oninput="sl(this)"><span class="sval fut-sval" id="v-eq1f">50</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="q">
+            <div class="q-tag" style="color:var(--coral)">Distributive equity</div>
+            <div class="q-text">Does this innovation help ensure that environmental benefits (clean air, green space,
+              water) reach people who have historically been left out?</div>
+            <div class="pair">
+              <div>
+                <div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential
+                </div>
+                <div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="eq2n"
+                    oninput="sl(this)"><span class="sval now-sval" id="v-eq2n">50</span></div>
+              </div>
+              <div>
+                <div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050
+                </div>
+                <div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="eq2f"
+                    oninput="sl(this)"><span class="sval fut-sval" id="v-eq2f">50</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="q">
+            <div class="q-tag" style="color:var(--coral)">Recognitional equity</div>
+            <div class="q-text">Does this innovation give a louder voice and greater recognition to communities that are
+              often ignored in decision-making?</div>
+            <div class="pair">
+              <div>
+                <div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential
+                </div>
+                <div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="eq3n"
+                    oninput="sl(this)"><span class="sval now-sval" id="v-eq3n">50</span></div>
+              </div>
+              <div>
+                <div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050
+                </div>
+                <div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="eq3f"
+                    oninput="sl(this)"><span class="sval fut-sval" id="v-eq3f">50</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="q">
+            <div class="q-tag" style="color:var(--coral)">Capabilities equity</div>
+            <div class="q-text">Does this innovation give people the skills, tools, or confidence they need to act on
+              environmental and social challenges?</div>
+            <div class="pair">
+              <div>
+                <div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential
+                </div>
+                <div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="eq4n"
+                    oninput="sl(this)"><span class="sval now-sval" id="v-eq4n">50</span></div>
+              </div>
+              <div>
+                <div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050
+                </div>
+                <div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="eq4f"
+                    oninput="sl(this)"><span class="sval fut-sval" id="v-eq4f">50</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BIODIVERSITY -->
+      <div class="card" id="c1">
+        <div class="card-head">
+          <div class="theme-badge" style="background:var(--green-light)">🌿</div>
+          <div>
+            <div class="theme-name" style="color:var(--green-dark)">Biodiversity</div>
+            <div class="theme-sub">How the innovation affects the variety of life and ecosystems</div>
+          </div>
+          <button class="tip-btn" onclick="td('d1')">What does this mean?</button>
+        </div>
+        <div class="def" id="d1">
+          <strong>Biodiversity</strong> is the variety of life on Earth — the differences within species, between
+          species, and across habitats and ecosystems. It sustains the health of the planet and provides essential
+          services such as food, clean water, and climate stability.<br><br>
+          <em>Source: IPBES, 2024</em>
+        </div>
+        <div class="qs">
+          <div class="q">
+            <div class="q-tag" style="color:var(--green)">Genetic diversity</div>
+            <div class="q-text">Could this innovation help preserve or increase the genetic variety within plant and
+              animal populations?</div>
+            <div class="pair">
+              <div>
+                <div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential
+                </div>
+                <div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="bi1n"
+                    oninput="sl(this)"><span class="sval now-sval" id="v-bi1n">50</span></div>
+              </div>
+              <div>
+                <div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050
+                </div>
+                <div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="bi1f"
+                    oninput="sl(this)"><span class="sval fut-sval" id="v-bi1f">50</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="q">
+            <div class="q-tag" style="color:var(--green)">Species diversity</div>
+            <div class="q-text">Could this innovation lead to more species — or protect existing ones — in the affected
+              area?</div>
+            <div class="pair">
+              <div>
+                <div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential
+                </div>
+                <div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="bi2n"
+                    oninput="sl(this)"><span class="sval now-sval" id="v-bi2n">50</span></div>
+              </div>
+              <div>
+                <div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050
+                </div>
+                <div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="bi2f"
+                    oninput="sl(this)"><span class="sval fut-sval" id="v-bi2f">50</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="q">
+            <div class="q-tag" style="color:var(--green)">Habitat diversity</div>
+            <div class="q-text">Could this innovation create or restore a greater variety of natural habitats (e.g.
+              wetlands, meadows, forests)?</div>
+            <div class="pair">
+              <div>
+                <div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential
+                </div>
+                <div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="bi3n"
+                    oninput="sl(this)"><span class="sval now-sval" id="v-bi3n">50</span></div>
+              </div>
+              <div>
+                <div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050
+                </div>
+                <div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="bi3f"
+                    oninput="sl(this)"><span class="sval fut-sval" id="v-bi3f">50</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="q">
+            <div class="q-tag" style="color:var(--green)">Ecosystem functions</div>
+            <div class="q-text">Could this innovation strengthen how ecosystems function together — like pollination,
+              water filtering, or carbon storage?</div>
+            <div class="pair">
+              <div>
+                <div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential
+                </div>
+                <div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="bi4n"
+                    oninput="sl(this)"><span class="sval now-sval" id="v-bi4n">50</span></div>
+              </div>
+              <div>
+                <div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050
+                </div>
+                <div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="bi4f"
+                    oninput="sl(this)"><span class="sval fut-sval" id="v-bi4f">50</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRANSFORMATION -->
+      <div class="card" id="c2">
+        <div class="card-head">
+          <div class="theme-badge" style="background:var(--purple-light)">🔄</div>
+          <div>
+            <div class="theme-name" style="color:var(--purple-dark)">Transformation</div>
+            <div class="theme-sub">Deep, system-wide change across personal, practical, and political levels</div>
+          </div>
+          <button class="tip-btn" onclick="td('d2')">What does this mean?</button>
+        </div>
+        <div class="def" id="d2">
+          <strong>Transformation</strong> means deep, system-wide social change — new ways of thinking, acting, and
+          organising societies. Innovations can trigger transformation at three levels: the <em>personal</em> (values
+          and mindsets), the <em>practical</em> (new actions and technologies), and the <em>political</em>
+          (institutional and structural change).<br><br>
+          <em>Sources: IPBES, 2024; O'Brien, 2018</em>
+        </div>
+        <div class="qs">
+          <div class="q">
+            <div class="q-tag" style="color:var(--purple)">Personal level — mindsets</div>
+            <div class="q-text">Could this innovation genuinely shift how individuals think or feel about sustainability
+              and nature — not just inform, but change values?</div>
+            <div class="pair">
+              <div>
+                <div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential
+                </div>
+                <div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="tr1n"
+                    oninput="sl(this)"><span class="sval now-sval" id="v-tr1n">50</span></div>
+              </div>
+              <div>
+                <div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050
+                </div>
+                <div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="tr1f"
+                    oninput="sl(this)"><span class="sval fut-sval" id="v-tr1f">50</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="q">
+            <div class="q-tag" style="color:var(--purple)">Practical level — actions</div>
+            <div class="q-text">Could this innovation spark new behaviours, technologies, or practices that meaningfully
+              address social or environmental problems?</div>
+            <div class="pair">
+              <div>
+                <div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential
+                </div>
+                <div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="tr2n"
+                    oninput="sl(this)"><span class="sval now-sval" id="v-tr2n">50</span></div>
+              </div>
+              <div>
+                <div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050
+                </div>
+                <div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="tr2f"
+                    oninput="sl(this)"><span class="sval fut-sval" id="v-tr2f">50</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="q">
+            <div class="q-tag" style="color:var(--purple)">Political level — systems</div>
+            <div class="q-text">Could this innovation influence laws, policies, or institutional norms in ways that
+              support long-term sustainability?</div>
+            <div class="pair">
+              <div>
+                <div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential
+                </div>
+                <div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="tr3n"
+                    oninput="sl(this)"><span class="sval now-sval" id="v-tr3n">50</span></div>
+              </div>
+              <div>
+                <div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050
+                </div>
+                <div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="tr3f"
+                    oninput="sl(this)"><span class="sval fut-sval" id="v-tr3f">50</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="submit" id="csub">
+        <h2>Your daisy is ready 🌼</h2>
+        <p>You've answered all 11 questions across both timepoints.<br>Review your diagram on the right, then submit
+          when you're ready.</p>
+        <button class="btn-sub" onclick="submitForm()">Submit evaluation →</button>
+      </div>
+
+      <!-- Form nav -->
+      <div class="fnav">
+        <button class="btn-back" id="bback" onclick="goBack()" style="visibility:hidden">← Back</button>
+        <span class="nav-hint">You can return to adjust answers at any time</span>
+        <button class="btn-next" id="bnext" onclick="goNext()">Continue → <span id="nlabel">Biodiversity</span></button>
+      </div>
+    </main>
+
+    <!-- Sidebar -->
+    <aside>
+      <div class="sb-title">Your daisy diagram</div>
+      <div class="radar-wrap">
+        <svg id="rsvg" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+          <polygon id="rg25" fill="none" stroke="#e0ddd6" stroke-width=".5" points="" />
+          <polygon id="rg50" fill="none" stroke="#e0ddd6" stroke-width=".5" points="" />
+          <polygon id="rg75" fill="none" stroke="#e0ddd6" stroke-width=".5" points="" />
+          <g id="raxes" stroke="#d8d6cf" stroke-width=".5"></g>
+          <polygon id="pnow" fill="#185FA5" fill-opacity=".12" stroke="#185FA5" stroke-width="1.5"
+            stroke-dasharray="4 3" stroke-opacity=".7" points="" />
+          <polygon id="pfut" fill="#B06D00" fill-opacity=".15" stroke="#B06D00" stroke-width="2" points="" />
+          <g id="rlbls" font-size="8.5" font-family="DM Sans,sans-serif" fill="#8a8a84" text-anchor="middle"></g>
+          <circle cx="130" cy="130" r="2.5" fill="#c2c0b6" />
+        </svg>
+      </div>
+      <div class="sb-legend">
+        <div class="leg">
+          <div class="leg-line leg-dash"></div><span>Current</span>
+        </div>
+        <div class="leg">
+          <div class="leg-line" style="background:var(--fut)"></div><span>By 2050</span>
+        </div>
+      </div>
+      <div class="dlist" id="dlist"></div>
+    </aside>
+
   </div>
 
-  <div class="prog-row"><span id="ptxt">Step 1 of 3 — Equity</span><strong id="ppct">0%</strong></div>
-  <div class="prog-track"><div class="prog-fill" id="pfill"></div></div>
+  <script>
+    // Data
+    const V = { eq1n: 50, eq1f: 50, eq2n: 50, eq2f: 50, eq3n: 50, eq3f: 50, eq4n: 50, eq4f: 50, bi1n: 50, bi1f: 50, bi2n: 50, bi2f: 50, bi3n: 50, bi3f: 50, bi4n: 50, bi4f: 50, tr1n: 50, tr1f: 50, tr2n: 50, tr2f: 50, tr3n: 50, tr3f: 50 };
 
-  <div class="steps">
-    <button class="step active" id="sb0" onclick="go(0)"><span class="ico">⚖️</span>Equity</button>
-    <button class="step" id="sb1" onclick="go(1)"><span class="ico">🌿</span>Biodiversity</button>
-    <button class="step" id="sb2" onclick="go(2)"><span class="ico">🔄</span>Transformation</button>
-  </div>
+    // Spokes: 11 sub-dimensions
+    const SPOKES = [
+      { n: 'eq1', lbl: 'Procedural\nequity', c: '#D85A30' },
+      { n: 'eq2', lbl: 'Distributive\nequity', c: '#D85A30' },
+      { n: 'eq3', lbl: 'Recognitional\nequity', c: '#D85A30' },
+      { n: 'eq4', lbl: 'Capabilities\nequity', c: '#D85A30' },
+      { n: 'bi1', lbl: 'Genetic\ndiversity', c: '#1D9E75' },
+      { n: 'bi2', lbl: 'Species\ndiversity', c: '#1D9E75' },
+      { n: 'bi3', lbl: 'Habitat\ndiversity', c: '#1D9E75' },
+      { n: 'bi4', lbl: 'Ecosystem\nfunctions', c: '#1D9E75' },
+      { n: 'tr1', lbl: 'Personal\nlevel', c: '#534AB7' },
+      { n: 'tr2', lbl: 'Practical\nlevel', c: '#534AB7' },
+      { n: 'tr3', lbl: 'Political\nlevel', c: '#534AB7' },
+    ];
+    const N = SPOKES.length, CX = 130, CY = 130, R = 88;
 
-  <!-- EQUITY -->
-  <div class="card on" id="c0">
-    <div class="card-head">
-      <div class="theme-badge" style="background:var(--coral-light)">⚖️</div>
-      <div>
-        <div class="theme-name" style="color:var(--coral-dark)">Equity</div>
-        <div class="theme-sub">Fairness, inclusion, and justice in how change is shared</div>
-      </div>
-      <button class="tip-btn" onclick="td('d0')">What does this mean?</button>
-    </div>
-    <div class="def" id="d0">
-      <strong>Equity</strong> refers to justice and fairness in how decisions are made, how benefits and burdens are shared, and how people can participate in shaping change. It includes: <em>procedural</em> equity (fair voice), <em>distributive</em> equity (fair sharing of benefits), <em>recognitional</em> equity (valuing different identities), and <em>capabilities</em> equity (freedom and skills to act).<br><br>
-      <em>Sources: EEA, 2024; Langemeyer &amp; Connolly, 2020; Wijsman &amp; Berbés-Blázquez, 2022</em>
-    </div>
-    <div class="qs">
-      <div class="q">
-        <div class="q-tag" style="color:var(--coral)">Procedural equity</div>
-        <div class="q-text">Can this innovation help people trust and engage with the institutions that make decisions about their environment?</div>
-        <div class="pair">
-          <div><div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential</div><div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="eq1n" oninput="sl(this)"><span class="sval now-sval" id="v-eq1n">50</span></div></div>
-          <div><div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050</div><div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="eq1f" oninput="sl(this)"><span class="sval fut-sval" id="v-eq1f">50</span></div></div>
-        </div>
-      </div>
-      <div class="q">
-        <div class="q-tag" style="color:var(--coral)">Distributive equity</div>
-        <div class="q-text">Does this innovation help ensure that environmental benefits (clean air, green space, water) reach people who have historically been left out?</div>
-        <div class="pair">
-          <div><div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential</div><div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="eq2n" oninput="sl(this)"><span class="sval now-sval" id="v-eq2n">50</span></div></div>
-          <div><div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050</div><div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="eq2f" oninput="sl(this)"><span class="sval fut-sval" id="v-eq2f">50</span></div></div>
-        </div>
-      </div>
-      <div class="q">
-        <div class="q-tag" style="color:var(--coral)">Recognitional equity</div>
-        <div class="q-text">Does this innovation give a louder voice and greater recognition to communities that are often ignored in decision-making?</div>
-        <div class="pair">
-          <div><div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential</div><div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="eq3n" oninput="sl(this)"><span class="sval now-sval" id="v-eq3n">50</span></div></div>
-          <div><div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050</div><div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="eq3f" oninput="sl(this)"><span class="sval fut-sval" id="v-eq3f">50</span></div></div>
-        </div>
-      </div>
-      <div class="q">
-        <div class="q-tag" style="color:var(--coral)">Capabilities equity</div>
-        <div class="q-text">Does this innovation give people the skills, tools, or confidence they need to act on environmental and social challenges?</div>
-        <div class="pair">
-          <div><div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential</div><div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="eq4n" oninput="sl(this)"><span class="sval now-sval" id="v-eq4n">50</span></div></div>
-          <div><div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050</div><div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="eq4f" oninput="sl(this)"><span class="sval fut-sval" id="v-eq4f">50</span></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
+    function angle(i) { return (Math.PI * 2 * i / N) - Math.PI / 2 }
+    function pt(i, pct) { const a = angle(i); return { x: CX + pct * R * Math.cos(a), y: CY + pct * R * Math.sin(a) } }
+    function poly(pcts) { return pcts.map((p, i) => { const q = pt(i, p); return q.x + ',' + q.y }).join(' ') }
 
-  <!-- BIODIVERSITY -->
-  <div class="card" id="c1">
-    <div class="card-head">
-      <div class="theme-badge" style="background:var(--green-light)">🌿</div>
-      <div>
-        <div class="theme-name" style="color:var(--green-dark)">Biodiversity</div>
-        <div class="theme-sub">How the innovation affects the variety of life and ecosystems</div>
-      </div>
-      <button class="tip-btn" onclick="td('d1')">What does this mean?</button>
-    </div>
-    <div class="def" id="d1">
-      <strong>Biodiversity</strong> is the variety of life on Earth — the differences within species, between species, and across habitats and ecosystems. It sustains the health of the planet and provides essential services such as food, clean water, and climate stability.<br><br>
-      <em>Source: IPBES, 2024</em>
-    </div>
-    <div class="qs">
-      <div class="q">
-        <div class="q-tag" style="color:var(--green)">Genetic diversity</div>
-        <div class="q-text">Could this innovation help preserve or increase the genetic variety within plant and animal populations?</div>
-        <div class="pair">
-          <div><div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential</div><div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="bi1n" oninput="sl(this)"><span class="sval now-sval" id="v-bi1n">50</span></div></div>
-          <div><div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050</div><div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="bi1f" oninput="sl(this)"><span class="sval fut-sval" id="v-bi1f">50</span></div></div>
-        </div>
-      </div>
-      <div class="q">
-        <div class="q-tag" style="color:var(--green)">Species diversity</div>
-        <div class="q-text">Could this innovation lead to more species — or protect existing ones — in the affected area?</div>
-        <div class="pair">
-          <div><div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential</div><div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="bi2n" oninput="sl(this)"><span class="sval now-sval" id="v-bi2n">50</span></div></div>
-          <div><div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050</div><div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="bi2f" oninput="sl(this)"><span class="sval fut-sval" id="v-bi2f">50</span></div></div>
-        </div>
-      </div>
-      <div class="q">
-        <div class="q-tag" style="color:var(--green)">Habitat diversity</div>
-        <div class="q-text">Could this innovation create or restore a greater variety of natural habitats (e.g. wetlands, meadows, forests)?</div>
-        <div class="pair">
-          <div><div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential</div><div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="bi3n" oninput="sl(this)"><span class="sval now-sval" id="v-bi3n">50</span></div></div>
-          <div><div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050</div><div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="bi3f" oninput="sl(this)"><span class="sval fut-sval" id="v-bi3f">50</span></div></div>
-        </div>
-      </div>
-      <div class="q">
-        <div class="q-tag" style="color:var(--green)">Ecosystem functions</div>
-        <div class="q-text">Could this innovation strengthen how ecosystems function together — like pollination, water filtering, or carbon storage?</div>
-        <div class="pair">
-          <div><div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential</div><div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="bi4n" oninput="sl(this)"><span class="sval now-sval" id="v-bi4n">50</span></div></div>
-          <div><div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050</div><div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="bi4f" oninput="sl(this)"><span class="sval fut-sval" id="v-bi4f">50</span></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
+    function buildSkeleton() {
+      const ax = document.getElementById('raxes');
+      const lb = document.getElementById('rlbls');
+      SPOKES.forEach((s, i) => {
+        const tip = pt(i, 1);
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', CX); line.setAttribute('y1', CY); line.setAttribute('x2', tip.x); line.setAttribute('y2', tip.y);
+        ax.appendChild(line);
+        const lp = pt(i, 1.26);
+        const lines = s.lbl.split('\n');
+        const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        txt.setAttribute('x', lp.x); txt.setAttribute('y', lp.y - (lines.length - 1) * 5);
+        txt.setAttribute('fill', s.c); txt.setAttribute('font-weight', '500');
+        const ta = lp.x < CX - 8 ? 'end' : lp.x > CX + 8 ? 'start' : 'middle';
+        txt.setAttribute('text-anchor', ta);
+        lines.forEach((ln, li) => {
+          const ts = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+          ts.setAttribute('x', lp.x); ts.setAttribute('dy', li === 0 ? 0 : '1.15em'); ts.textContent = ln;
+          txt.appendChild(ts);
+        });
+        lb.appendChild(txt);
+      });
+      [.25, .5, .75].forEach((p, ri) => {
+        document.getElementById(['rg25', 'rg50', 'rg75'][ri]).setAttribute('points', poly(SPOKES.map(() => p)));
+      });
+    }
 
-  <!-- TRANSFORMATION -->
-  <div class="card" id="c2">
-    <div class="card-head">
-      <div class="theme-badge" style="background:var(--purple-light)">🔄</div>
-      <div>
-        <div class="theme-name" style="color:var(--purple-dark)">Transformation</div>
-        <div class="theme-sub">Deep, system-wide change across personal, practical, and political levels</div>
-      </div>
-      <button class="tip-btn" onclick="td('d2')">What does this mean?</button>
-    </div>
-    <div class="def" id="d2">
-      <strong>Transformation</strong> means deep, system-wide social change — new ways of thinking, acting, and organising societies. Innovations can trigger transformation at three levels: the <em>personal</em> (values and mindsets), the <em>practical</em> (new actions and technologies), and the <em>political</em> (institutional and structural change).<br><br>
-      <em>Sources: IPBES, 2024; O'Brien, 2018</em>
-    </div>
-    <div class="qs">
-      <div class="q">
-        <div class="q-tag" style="color:var(--purple)">Personal level — mindsets</div>
-        <div class="q-text">Could this innovation genuinely shift how individuals think or feel about sustainability and nature — not just inform, but change values?</div>
-        <div class="pair">
-          <div><div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential</div><div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="tr1n" oninput="sl(this)"><span class="sval now-sval" id="v-tr1n">50</span></div></div>
-          <div><div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050</div><div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="tr1f" oninput="sl(this)"><span class="sval fut-sval" id="v-tr1f">50</span></div></div>
-        </div>
-      </div>
-      <div class="q">
-        <div class="q-tag" style="color:var(--purple)">Practical level — actions</div>
-        <div class="q-text">Could this innovation spark new behaviours, technologies, or practices that meaningfully address social or environmental problems?</div>
-        <div class="pair">
-          <div><div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential</div><div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="tr2n" oninput="sl(this)"><span class="sval now-sval" id="v-tr2n">50</span></div></div>
-          <div><div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050</div><div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="tr2f" oninput="sl(this)"><span class="sval fut-sval" id="v-tr2f">50</span></div></div>
-        </div>
-      </div>
-      <div class="q">
-        <div class="q-tag" style="color:var(--purple)">Political level — systems</div>
-        <div class="q-text">Could this innovation influence laws, policies, or institutional norms in ways that support long-term sustainability?</div>
-        <div class="pair">
-          <div><div class="pcol-label now-lbl"><span class="dot" style="background:var(--now)"></span>Current potential</div><div class="srow"><input type="range" class="nr" min="0" max="100" value="50" step="1" data-k="tr3n" oninput="sl(this)"><span class="sval now-sval" id="v-tr3n">50</span></div></div>
-          <div><div class="pcol-label fut-lbl"><span class="dot" style="background:var(--fut)"></span>Potential by 2050</div><div class="srow"><input type="range" class="fr" min="0" max="100" value="50" step="1" data-k="tr3f" oninput="sl(this)"><span class="sval fut-sval" id="v-tr3f">50</span></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
+    function updateRadar() {
+      document.getElementById('pnow').setAttribute('points', poly(SPOKES.map(s => V[s.n + 'n'] / 100)));
+      document.getElementById('pfut').setAttribute('points', poly(SPOKES.map(s => V[s.n + 'f'] / 100)));
+      updateDelta();
+    }
 
-  <!-- Submit -->
-  <div class="submit" id="csub">
-    <h2>Your daisy is ready 🌼</h2>
-    <p>You've answered all 11 questions across both timepoints.<br>Review your diagram on the right, then submit when you're ready.</p>
-    <button class="btn-sub" onclick="submitForm()">Submit evaluation →</button>
-  </div>
+    const GROUPS = [
+      { ico: '⚖️', lbl: 'Equity', ks: ['eq1', 'eq2', 'eq3', 'eq4'] },
+      { ico: '🌿', lbl: 'Biodiversity', ks: ['bi1', 'bi2', 'bi3', 'bi4'] },
+      { ico: '🔄', lbl: 'Transformation', ks: ['tr1', 'tr2', 'tr3'] },
+    ];
+    function gavg(ks, suf) { return Math.round(ks.reduce((s, k) => s + V[k + suf], 0) / ks.length) }
 
-  <!-- Form nav -->
-  <div class="fnav">
-    <button class="btn-back" id="bback" onclick="goBack()" style="visibility:hidden">← Back</button>
-    <span class="nav-hint">You can return to adjust answers at any time</span>
-    <button class="btn-next" id="bnext" onclick="goNext()">Continue → <span id="nlabel">Biodiversity</span></button>
-  </div>
-</main>
+    function updateDelta() {
+      const dl = document.getElementById('dlist');
+      dl.innerHTML = '<div class="drow hdr"><span></span><span>Theme</span><span class="dnow">Now</span><span class="dfut">2050</span></div>';
+      GROUPS.forEach(g => {
+        const r = document.createElement('div'); r.className = 'drow';
+        r.innerHTML = `<span style="font-size:13px">${g.ico}</span><span class="dname">${g.lbl}</span><span class="dnow">${gavg(g.ks, 'n')}</span><span class="dfut">${gavg(g.ks, 'f')}</span>`;
+        dl.appendChild(r);
+      });
+    }
 
-<!-- Sidebar -->
-<aside>
-  <div class="sb-title">Your daisy diagram</div>
-  <div class="radar-wrap">
-    <svg id="rsvg" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
-      <polygon id="rg25" fill="none" stroke="#e0ddd6" stroke-width=".5" points=""/>
-      <polygon id="rg50" fill="none" stroke="#e0ddd6" stroke-width=".5" points=""/>
-      <polygon id="rg75" fill="none" stroke="#e0ddd6" stroke-width=".5" points=""/>
-      <g id="raxes" stroke="#d8d6cf" stroke-width=".5"></g>
-      <polygon id="pnow" fill="#185FA5" fill-opacity=".12" stroke="#185FA5" stroke-width="1.5" stroke-dasharray="4 3" stroke-opacity=".7" points=""/>
-      <polygon id="pfut" fill="#B06D00" fill-opacity=".15" stroke="#B06D00" stroke-width="2" points=""/>
-      <g id="rlbls" font-size="8.5" font-family="DM Sans,sans-serif" fill="#8a8a84" text-anchor="middle"></g>
-      <circle cx="130" cy="130" r="2.5" fill="#c2c0b6"/>
-    </svg>
-  </div>
-  <div class="sb-legend">
-    <div class="leg"><div class="leg-line leg-dash"></div><span>Current</span></div>
-    <div class="leg"><div class="leg-line" style="background:var(--fut)"></div><span>By 2050</span></div>
-  </div>
-  <div class="dlist" id="dlist"></div>
-</aside>
+    // Slider handler
+    function sl(inp) {
+      const k = inp.dataset.k, v = parseInt(inp.value);
+      V[k] = v;
+      document.getElementById('v-' + k).textContent = v;
+      const pct = v + '%';
+      inp.style.background = inp.classList.contains('nr')
+        ? `linear-gradient(to right,var(--now) ${pct},#e0ddd6 ${pct})`
+        : `linear-gradient(to right,var(--fut) ${pct},#e0ddd6 ${pct})`;
+      updateRadar(); updateProg();
+    }
 
-</div>
+    // Def toggle
+    function td(id) { document.getElementById(id).classList.toggle('open') }
 
-<script>
-// Data
-const V={eq1n:50,eq1f:50,eq2n:50,eq2f:50,eq3n:50,eq3f:50,eq4n:50,eq4f:50,bi1n:50,bi1f:50,bi2n:50,bi2f:50,bi3n:50,bi3f:50,bi4n:50,bi4f:50,tr1n:50,tr1f:50,tr2n:50,tr2f:50,tr3n:50,tr3f:50};
+    // Steps
+    let cur = 0;
+    const STEPS = ['c0', 'c1', 'c2'];
+    const STEPLBLS = ['Equity', 'Biodiversity', 'Transformation'];
+    const NEXTLBLS = ['Biodiversity', 'Transformation', 'Review & submit'];
 
-// Spokes: 11 sub-dimensions
-const SPOKES=[
-  {n:'eq1',lbl:'Procedural\nequity',c:'#D85A30'},
-  {n:'eq2',lbl:'Distributive\nequity',c:'#D85A30'},
-  {n:'eq3',lbl:'Recognitional\nequity',c:'#D85A30'},
-  {n:'eq4',lbl:'Capabilities\nequity',c:'#D85A30'},
-  {n:'bi1',lbl:'Genetic\ndiversity',c:'#1D9E75'},
-  {n:'bi2',lbl:'Species\ndiversity',c:'#1D9E75'},
-  {n:'bi3',lbl:'Habitat\ndiversity',c:'#1D9E75'},
-  {n:'bi4',lbl:'Ecosystem\nfunctions',c:'#1D9E75'},
-  {n:'tr1',lbl:'Personal\nlevel',c:'#534AB7'},
-  {n:'tr2',lbl:'Practical\nlevel',c:'#534AB7'},
-  {n:'tr3',lbl:'Political\nlevel',c:'#534AB7'},
-];
-const N=SPOKES.length,CX=130,CY=130,R=88;
+    function go(n) {
+      STEPS.forEach((id, i) => {
+        document.getElementById(id).classList.toggle('on', i === n);
+        const b = document.getElementById('sb' + i);
+        b.classList.remove('active', 'done');
+        if (i === n) b.classList.add('active'); else if (i < n) b.classList.add('done');
+      });
+      document.getElementById('csub').classList.toggle('on', n === 3);
+      document.getElementById('bback').style.visibility = n === 0 ? 'hidden' : 'visible';
+      document.getElementById('bnext').style.display = n === 3 ? 'none' : '';
+      if (n < 3) document.getElementById('nlabel').textContent = NEXTLBLS[n];
+      document.getElementById('ptxt').textContent = n < 3 ? `Step ${n + 1} of 3 — ${STEPLBLS[n]}` : 'All done!';
+      cur = n; updateProg(); window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function goNext() { if (cur < 3) go(cur + 1) }
+    function goBack() { if (cur > 0) go(cur - 1) }
 
-function angle(i){return(Math.PI*2*i/N)-Math.PI/2}
-function pt(i,pct){const a=angle(i);return{x:CX+pct*R*Math.cos(a),y:CY+pct*R*Math.sin(a)}}
-function poly(pcts){return pcts.map((p,i)=>{const q=pt(i,p);return q.x+','+q.y}).join(' ')}
+    function updateProg() {
+      const moved = Object.values(V).filter(v => v !== 50).length;
+      const pct = Math.round(moved / Object.keys(V).length * 100);
+      document.getElementById('pfill').style.width = pct + '%';
+      document.getElementById('ppct').textContent = pct + '%';
+    }
 
-function buildSkeleton(){
-  const ax=document.getElementById('raxes');
-  const lb=document.getElementById('rlbls');
-  SPOKES.forEach((s,i)=>{
-    const tip=pt(i,1);
-    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1',CX);line.setAttribute('y1',CY);line.setAttribute('x2',tip.x);line.setAttribute('y2',tip.y);
-    ax.appendChild(line);
-    const lp=pt(i,1.26);
-    const lines=s.lbl.split('\n');
-    const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
-    txt.setAttribute('x',lp.x);txt.setAttribute('y',lp.y-(lines.length-1)*5);
-    txt.setAttribute('fill',s.c);txt.setAttribute('font-weight','500');
-    const ta=lp.x<CX-8?'end':lp.x>CX+8?'start':'middle';
-    txt.setAttribute('text-anchor',ta);
-    lines.forEach((ln,li)=>{
-      const ts=document.createElementNS('http://www.w3.org/2000/svg','tspan');
-      ts.setAttribute('x',lp.x);ts.setAttribute('dy',li===0?0:'1.15em');ts.textContent=ln;
-      txt.appendChild(ts);
-    });
-    lb.appendChild(txt);
-  });
-  [.25,.5,.75].forEach((p,ri)=>{
-    document.getElementById(['rg25','rg50','rg75'][ri]).setAttribute('points',poly(SPOKES.map(()=>p)));
-  });
-}
+    function submitForm() {
+      // Collect all values as a flat object — replace this with your PHP form POST
+      const payload = Object.assign({}, V);
+      console.log('Submission payload:', JSON.stringify(payload, null, 2));
+      alert('Submitted! In production this POSTs to your PHP handler.\n\nPayload logged to console.');
+    }
 
-function updateRadar(){
-  document.getElementById('pnow').setAttribute('points',poly(SPOKES.map(s=>V[s.n+'n']/100)));
-  document.getElementById('pfut').setAttribute('points',poly(SPOKES.map(s=>V[s.n+'f']/100)));
-  updateDelta();
-}
-
-const GROUPS=[
-  {ico:'⚖️',lbl:'Equity',ks:['eq1','eq2','eq3','eq4']},
-  {ico:'🌿',lbl:'Biodiversity',ks:['bi1','bi2','bi3','bi4']},
-  {ico:'🔄',lbl:'Transformation',ks:['tr1','tr2','tr3']},
-];
-function gavg(ks,suf){return Math.round(ks.reduce((s,k)=>s+V[k+suf],0)/ks.length)}
-
-function updateDelta(){
-  const dl=document.getElementById('dlist');
-  dl.innerHTML='<div class="drow hdr"><span></span><span>Theme</span><span class="dnow">Now</span><span class="dfut">2050</span></div>';
-  GROUPS.forEach(g=>{
-    const r=document.createElement('div');r.className='drow';
-    r.innerHTML=`<span style="font-size:13px">${g.ico}</span><span class="dname">${g.lbl}</span><span class="dnow">${gavg(g.ks,'n')}</span><span class="dfut">${gavg(g.ks,'f')}</span>`;
-    dl.appendChild(r);
-  });
-}
-
-// Slider handler
-function sl(inp){
-  const k=inp.dataset.k,v=parseInt(inp.value);
-  V[k]=v;
-  document.getElementById('v-'+k).textContent=v;
-  const pct=v+'%';
-  inp.style.background=inp.classList.contains('nr')
-    ?`linear-gradient(to right,var(--now) ${pct},#e0ddd6 ${pct})`
-    :`linear-gradient(to right,var(--fut) ${pct},#e0ddd6 ${pct})`;
-  updateRadar();updateProg();
-}
-
-// Def toggle
-function td(id){document.getElementById(id).classList.toggle('open')}
-
-// Steps
-let cur=0;
-const STEPS=['c0','c1','c2'];
-const STEPLBLS=['Equity','Biodiversity','Transformation'];
-const NEXTLBLS=['Biodiversity','Transformation','Review & submit'];
-
-function go(n){
-  STEPS.forEach((id,i)=>{
-    document.getElementById(id).classList.toggle('on',i===n);
-    const b=document.getElementById('sb'+i);
-    b.classList.remove('active','done');
-    if(i===n)b.classList.add('active');else if(i<n)b.classList.add('done');
-  });
-  document.getElementById('csub').classList.toggle('on',n===3);
-  document.getElementById('bback').style.visibility=n===0?'hidden':'visible';
-  document.getElementById('bnext').style.display=n===3?'none':'';
-  if(n<3)document.getElementById('nlabel').textContent=NEXTLBLS[n];
-  document.getElementById('ptxt').textContent=n<3?`Step ${n+1} of 3 — ${STEPLBLS[n]}`:'All done!';
-  cur=n;updateProg();window.scrollTo({top:0,behavior:'smooth'});
-}
-function goNext(){if(cur<3)go(cur+1)}
-function goBack(){if(cur>0)go(cur-1)}
-
-function updateProg(){
-  const moved=Object.values(V).filter(v=>v!==50).length;
-  const pct=Math.round(moved/Object.keys(V).length*100);
-  document.getElementById('pfill').style.width=pct+'%';
-  document.getElementById('ppct').textContent=pct+'%';
-}
-
-function submitForm(){
-  // Collect all values as a flat object — replace this with your PHP form POST
-  const payload=Object.assign({},V);
-  console.log('Submission payload:', JSON.stringify(payload, null, 2));
-  alert('Submitted! In production this POSTs to your PHP handler.\n\nPayload logged to console.');
-}
-
-// Init
-buildSkeleton();updateRadar();updateProg();
-</script>
+    // Init
+    buildSkeleton(); updateRadar(); updateProg();
+  </script>
 </body>
+
 </html>
