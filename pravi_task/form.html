@@ -1,326 +1,289 @@
-<!DOCTYPE html>
-<html lang="en">
+/**
+* DAISY Radar Diagram
+* ───────────────────
+* Self-contained module. Call init(containerSelector, values?) to render.
+*
+* Usage:
+* import { init, update } from './daisy-diagram.js';
+* init('#my-container'); // render with default values (all 50)
+* update({ eq1n: 80, eq1f: 90, ... }); // push new values and redraw
+*
+* Values object keys:
+* eq1n/f, eq2n/f, eq3n/f, eq4n/f — Equity spokes (now / 2050)
+* bi1n/f, bi2n/f, bi3n/f, bi4n/f — Biodiversity spokes
+* tr1n/f, tr2n/f, tr3n/f — Transformation spokes
+* All values 0–100. Default 50 = neutral.
+*/
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRD2 — Submit your innovation</title>
+const SPOKES = [
+{ n: 'eq1', lbl: 'Procedural\nequity', c: '#D85A30' },
+{ n: 'eq2', lbl: 'Distributive\nequity', c: '#D85A30' },
+{ n: 'eq3', lbl: 'Recognitional\nequity', c: '#D85A30' },
+{ n: 'eq4', lbl: 'Capabilities\nequity', c: '#D85A30' },
+{ n: 'bi1', lbl: 'Genetic\ndiversity', c: '#C0392B' },
+{ n: 'bi2', lbl: 'Species\ndiversity', c: '#C0392B' },
+{ n: 'bi3', lbl: 'Habitat\ndiversity', c: '#C0392B' },
+{ n: 'bi4', lbl: 'Ecosystem\nfunctions', c: '#C0392B' },
+{ n: 'tr1', lbl: 'Personal\nlevel', c: '#534AB7' },
+{ n: 'tr2', lbl: 'Practical\nlevel', c: '#534AB7' },
+{ n: 'tr3', lbl: 'Political\nlevel', c: '#534AB7' },
+];
+
+const GROUPS = [
+{ ico: '⚖️', lbl: 'Equity', ks: ['eq1', 'eq2', 'eq3', 'eq4'] },
+{ ico: '🌿', lbl: 'Biodiversity', ks: ['bi1', 'bi2', 'bi3', 'bi4'] },
+{ ico: '🔄', lbl: 'Transformation', ks: ['tr1', 'tr2', 'tr3'] },
+];
+
+const DEFAULT_VALUES = {
+eq1n:50, eq1f:50, eq2n:50, eq2f:50, eq3n:50, eq3f:50, eq4n:50, eq4f:50,
+bi1n:50, bi1f:50, bi2n:50, bi2f:50, bi3n:50, bi3f:50, bi4n:50, bi4f:50,
+tr1n:50, tr1f:50, tr2n:50, tr2f:50, tr3n:50, tr3f:50,
+};
+
+const N = SPOKES.length;
+const CX = 130, CY = 130, R = 88;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+let V = { ...DEFAULT_VALUES };
+let svgEl, pnowEl, pfutEl, dlistEl;
+
+// ── Geometry ──────────────────────────────────────────────────────────────────
+
+function angle(i) {
+return (Math.PI * 2 * i / N) - Math.PI / 2;
+}
+
+function pt(i, pct) {
+const a = angle(i);
+return { x: CX + pct * R * Math.cos(a), y: CY + pct * R * Math.sin(a) };
+}
+
+function polyPoints(pcts) {
+return pcts.map((p, i) => {
+const q = pt(i, p);
+return `${q.x},${q.y}`;
+}).join(' ');
+}
+
+// ── Build static skeleton (axes, grid rings, labels) ─────────────────────────
+
+function buildSkeleton(svg) {
+const axesG = svg.querySelector('#raxes');
+const labelsG = svg.querySelector('#rlbls');
+
+SPOKES.forEach((s, i) => {
+const tip = pt(i, 1);
+
+// Axis line
+const line = document.createElementNS(SVG_NS, 'line');
+line.setAttribute('x1', CX); line.setAttribute('y1', CY);
+line.setAttribute('x2', tip.x); line.setAttribute('y2', tip.y);
+axesG.appendChild(line);
+
+// Label
+const lp = pt(i, 1.28);
+const lines = s.lbl.split('\n');
+const txt = document.createElementNS(SVG_NS, 'text');
+txt.setAttribute('x', lp.x);
+txt.setAttribute('y', lp.y - (lines.length - 1) * 5);
+txt.setAttribute('fill', s.c);
+txt.setAttribute('font-weight', '500');
+const ta = lp.x < CX - 8 ? 'end' : lp.x> CX + 8 ? 'start' : 'middle';
+    txt.setAttribute('text-anchor', ta);
+    lines.forEach((ln, li) => {
+    const ts = document.createElementNS(SVG_NS, 'tspan');
+    ts.setAttribute('x', lp.x);
+    ts.setAttribute('dy', li === 0 ? 0 : '1.15em');
+    ts.textContent = ln;
+    txt.appendChild(ts);
+    });
+    labelsG.appendChild(txt);
+    });
+
+    // Grid rings at 25%, 50%, 75%
+    [['rg25', 0.25], ['rg50', 0.5], ['rg75', 0.75]].forEach(([id, p]) => {
+    svg.querySelector(`#${id}`).setAttribute('points', polyPoints(SPOKES.map(() => p)));
+    });
+    }
+
+    // ── Redraw data polygons ──────────────────────────────────────────────────────
+
+    function redrawPolygons() {
+    pnowEl.setAttribute('points', polyPoints(SPOKES.map(s => V[s.n + 'n'] / 100)));
+    pfutEl.setAttribute('points', polyPoints(SPOKES.map(s => V[s.n + 'f'] / 100)));
+    }
+
+    // ── Update group averages table ───────────────────────────────────────────────
+
+    function gavg(ks, suf) {
+    return Math.round(ks.reduce((sum, k) => sum + V[k + suf], 0) / ks.length);
+    }
+
+    function redrawTable() {
+    dlistEl.innerHTML = `
+    <div class="daisy-drow daisy-hdr">
+        <span></span><span>Theme</span>
+        <span class="daisy-dnow">Now</span>
+        <span class="daisy-dfut">2050</span>
+    </div>`;
+    GROUPS.forEach(g => {
+    const row = document.createElement('div');
+    row.className = 'daisy-drow';
+    row.innerHTML = `
+    <span style="font-size:13px">${g.ico}</span>
+    <span>${g.lbl}</span>
+    <span class="daisy-dnow">${gavg(g.ks, 'n')}</span>
+    <span class="daisy-dfut">${gavg(g.ks, 'f')}</span>`;
+    dlistEl.appendChild(row);
+    });
+    }
+
+    // ── DOM template ─────────────────────────────────────────────────────────────
+
+    function buildHTML(container) {
+    container.innerHTML = `
     <style>
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        .daisy-wrap {
+            font-family: 'DM Sans', sans-serif;
+            max-width: 320px;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #fafaf8;
+        .daisy-title {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 8px;
             color: #1a1a18;
-            min-height: 100vh;
-            padding: 2rem 1rem;
         }
 
-        .wrap {
-            max-width: 620px;
-            margin: 0 auto;
-            background: #fff;
-            border: 0.5px solid #e0ddd5;
-            border-radius: 12px;
-            padding: 2.5rem 2rem;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 22px;
-            font-weight: 500;
-            color: #C0392B;
-            margin-bottom: 2rem;
-            line-height: 1.3;
-        }
-
-        .steps {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 2rem;
-        }
-
-        .step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            z-index: 1;
-        }
-
-        .step-num {
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            border: 1.5px solid #C0392B;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 500;
-            color: #C0392B;
-            background: #fff;
-        }
-
-        .step-num.active {
-            background: #C0392B;
-            color: #fff;
-        }
-
-        .step-lbl {
-            font-size: 11px;
-            color: #888;
-            text-align: center;
-            line-height: 1.3;
-        }
-
-        .step-lbl.active {
-            color: #C0392B;
-            font-weight: 500;
-        }
-
-        .step-line {
-            flex: 1;
-            height: 1px;
-            background: #ddd;
-            margin-top: 14px;
-        }
-
-        .desc-block {
-            margin-bottom: 1.5rem;
-        }
-
-        .desc-block p {
-            font-size: 13.5px;
-            color: #555;
-            line-height: 1.7;
-            margin-bottom: 0.75rem;
-        }
-
-        .desc-block p:last-child {
-            margin-bottom: 0;
-        }
-
-        .desc-block strong {
-            color: #1a1a18;
-            font-weight: 500;
-        }
-
-        .req-note {
-            font-size: 11px;
-            color: #aaa;
-            margin-bottom: 1.25rem;
-        }
-
-        .req-note span {
-            color: #C0392B;
-        }
-
-        .section-label {
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: .06em;
-            text-transform: uppercase;
-            color: #C0392B;
-            margin: 1.5rem 0 .75rem;
-        }
-
-        .section-label:first-of-type {
-            margin-top: 0;
-        }
-
-        .field {
-            margin-bottom: .75rem;
-        }
-
-        .field label {
-            display: block;
-            font-size: 13px;
-            color: #555;
-            margin-bottom: 4px;
-        }
-
-        .field label span {
-            color: #C0392B;
-        }
-
-        .field input,
-        .field textarea {
+        .daisy-radar {
             width: 100%;
-            background: #fff;
-            border: 0.5px solid #ccc;
-            border-radius: 8px;
-            padding: 9px 12px;
-            font-size: 14px;
-            color: #1a1a18;
-            outline: none;
-            transition: border-color .15s;
-            font-family: inherit;
+            aspect-ratio: 1;
         }
 
-        .field input:focus,
-        .field textarea:focus {
-            border-color: #C0392B;
-            box-shadow: 0 0 0 3px rgba(192, 57, 43, .08);
+        .daisy-radar svg {
+            width: 100%;
+            height: 100%;
         }
 
-        .field textarea {
-            resize: vertical;
-            min-height: 80px;
-            line-height: 1.5;
+        .daisy-legend {
+            display: flex;
+            gap: 12px;
+            font-size: 10px;
+            color: #8a8a84;
+            margin: 6px 0 10px;
         }
 
-        .row {
+        .daisy-leg {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .daisy-drow {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: .75rem;
-        }
-
-        .hint {
+            grid-template-columns: 18px 1fr auto auto;
+            align-items: center;
+            gap: 5px;
             font-size: 11px;
-            color: #aaa;
-            margin-top: 3px;
+            color: #4a4a46;
         }
 
-        .divider {
-            border: none;
-            border-top: 0.5px solid #e8e5de;
-            margin: 1.5rem 0;
+        .daisy-hdr {
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            color: #8a8a84;
+            margin-bottom: 3px;
         }
 
-        .submit-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: #C0392B;
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            margin-top: 1rem;
-            letter-spacing: .02em;
-            font-family: inherit;
-            transition: opacity .15s;
+        .daisy-dnow {
+            color: #185FA5;
+            font-weight: 600;
+            min-width: 24px;
+            text-align: right;
         }
 
-        .submit-btn:hover {
-            opacity: .88;
-        }
-
-        @media (max-width: 500px) {
-            .row {
-                grid-template-columns: 1fr;
-            }
-
-            .wrap {
-                padding: 1.5rem 1rem;
-            }
+        .daisy-dfut {
+            color: #B06D00;
+            font-weight: 600;
+            min-width: 24px;
+            text-align: right;
         }
     </style>
-</head>
-
-<body>
-    <div class="wrap">
-        <h1>Simplified Transformative Diagnostic Tool (TRD2)</h1>
-
-        <div class="steps">
-            <div class="step">
-                <div class="step-num active">1</div>
-                <div class="step-lbl active">Your<br>Project</div>
-            </div>
-            <div class="step-line"></div>
-            <div class="step">
-                <div class="step-num">2</div>
-                <div class="step-lbl">Current<br>Potential</div>
-            </div>
-            <div class="step-line"></div>
-            <div class="step">
-                <div class="step-num">3</div>
-                <div class="step-lbl">Future<br>Potential (2050)</div>
-            </div>
+    <div class="daisy-wrap">
+        <div class="daisy-title">Daisy diagram</div>
+        <div class="daisy-radar">
+            <svg id="daisy-rsvg" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+                <polygon id="rg25" fill="none" stroke="#e0ddd6" stroke-width=".5" points="" />
+                <polygon id="rg50" fill="none" stroke="#e0ddd6" stroke-width=".5" points="" />
+                <polygon id="rg75" fill="none" stroke="#e0ddd6" stroke-width=".5" points="" />
+                <g id="raxes" stroke="#d8d6cf" stroke-width=".5"></g>
+                <polygon id="pnow" fill="#185FA5" fill-opacity=".12" stroke="#185FA5" stroke-width="1.5"
+                    stroke-dasharray="4 3" stroke-opacity=".7" points="" />
+                <polygon id="pfut" fill="#B06D00" fill-opacity=".15" stroke="#B06D00" stroke-width="2" points="" />
+                <g id="rlbls" font-size="8.5" font-family="DM Sans,sans-serif" fill="#8a8a84" text-anchor="middle"></g>
+                <circle cx="130" cy="130" r="2.5" fill="#c2c0b6" />
+            </svg>
         </div>
-
-        <div class="desc-block">
-            <p>The <strong>Transformative Diagnostic Tool (TRD2)</strong> helps you see how your innovation contributes
-                to meaningful change for <strong>people and the planet</strong>. It looks at three key dimensions —
-                <strong>transformation, equity, and biodiversity</strong> — that together shape a just and lasting
-                future. By comparing where you are today with your ambitions for 2050, TRD2 creates a simple radar chart
-                showing your current strengths and future opportunities.</p>
-            <p>Before you start, please share a few details about your innovation — this helps us generate the
-                <strong>TRD2 results</strong> and send the <strong>radar chart</strong> by email. Fields marked with
-                <span style="color:#C0392B">*</span> are required.</p>
-        </div>
-
-        <p class="req-note">Fields marked <span>*</span> are required</p>
-
-        <div class="section-label">About you</div>
-        <div class="row">
-            <div class="field">
-                <label>Name <span>*</span></label>
-                <input type="text" placeholder="Your full name">
+        <div class="daisy-legend">
+            <div class="daisy-leg">
+                <svg width="16" height="6">
+                    <line x1="0" y1="3" x2="16" y2="3" stroke="#185FA5" stroke-width="1.5" stroke-dasharray="4 3" />
+                </svg>
+                <span>Current</span>
             </div>
-            <div class="field">
-                <label>Email address <span>*</span></label>
-                <input type="email" placeholder="you@example.com">
+            <div class="daisy-leg">
+                <svg width="16" height="4">
+                    <line x1="0" y1="2" x2="16" y2="2" stroke="#B06D00" stroke-width="2" />
+                </svg>
+                <span>By 2050</span>
             </div>
         </div>
+        <div id="daisy-dlist"></div>
+    </div>`;
+    }
 
-        <hr class="divider">
-        <div class="section-label">About your innovation</div>
+    // ── Public API ────────────────────────────────────────────────────────────────
 
-        <div class="field">
-            <label>Innovation title <span>*</span></label>
-            <input type="text" placeholder="Short name or title">
-        </div>
+    /**
+    * Render the diagram inside `selector`.
+    * @param {string} selector CSS selector for the host element
+    * @param {object} [values] Optional initial values (0–100). Missing keys default to 50.
+    */
+    export function init(selector, values = {}) {
+    const container = document.querySelector(selector);
+    if (!container) throw new Error(`daisy-diagram: no element found for "${selector}"`);
 
-        <div class="row">
-            <div class="field">
-                <label>Country or region <span>*</span></label>
-                <input type="text" placeholder="e.g. Spain, West Africa">
-            </div>
-            <div class="field">
-                <label>Stage of development</label>
-                <input type="text" placeholder="e.g. idea, pilot, scaling">
-            </div>
-        </div>
+    buildHTML(container);
 
-        <div class="row">
-            <div class="field">
-                <label>Sector <span>*</span></label>
-                <input type="text" placeholder="e.g. energy, education">
-            </div>
-            <div class="field">
-                <label>Organisation type <span>*</span></label>
-                <input type="text" placeholder="e.g. NGO, university, SME">
-            </div>
-        </div>
+    svgEl = container.querySelector('#daisy-rsvg');
+    pnowEl = container.querySelector('#pnow');
+    pfutEl = container.querySelector('#pfut');
+    dlistEl = container.querySelector('#daisy-dlist');
 
-        <div class="field">
-            <label>Innovation type</label>
-            <input type="text" placeholder="e.g. social, technological, digital, policy, or mixed">
-        </div>
+    V = { ...DEFAULT_VALUES, ...values };
 
-        <div class="field">
-            <label>Brief description</label>
-            <textarea placeholder="1–2 sentences giving context about your initiative"></textarea>
-        </div>
+    buildSkeleton(svgEl);
+    redrawPolygons();
+    redrawTable();
+    }
 
-        <div class="field">
-            <label>Website or link</label>
-            <input type="url" placeholder="https://...">
-            <div class="hint">Optional — to learn more about your initiative</div>
-        </div>
+    /**
+    * Push new values and redraw. Partial updates are fine — only supplied keys change.
+    * @param {object} newValues
+    */
+    export function update(newValues) {
+    Object.assign(V, newValues);
+    redrawPolygons();
+    redrawTable();
+    }
 
-        <button class="submit-btn">Next</button>
-    </div>
-</body>
-
-</html>
+    /**
+    * Read the current values snapshot.
+    * @returns {object}
+    */
+    export function getValues() {
+    return { ...V };
+    }

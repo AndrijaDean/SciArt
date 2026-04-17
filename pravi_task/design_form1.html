@@ -60,9 +60,9 @@
 
     .page {
       display: grid;
-      grid-template-columns: 1fr 300px;
+      grid-template-columns: 1fr;
       grid-template-rows: 64px 1fr;
-      max-width: 1080px;
+      max-width: 780px;
       margin: 0 auto;
       min-height: 100vh
     }
@@ -110,19 +110,6 @@
     main {
       padding: 28px 28px 80px;
       overflow-y: auto
-    }
-
-    aside {
-      background: var(--surface);
-      border-left: 1px solid var(--border2);
-      padding: 24px 20px;
-      position: sticky;
-      top: 0;
-      height: calc(100vh - 64px);
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 16px
     }
 
     .intro {
@@ -515,89 +502,6 @@
       transform: translateY(-1px)
     }
 
-    .sb-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 16px;
-      font-weight: 400;
-      color: var(--ink);
-      letter-spacing: -.01em
-    }
-
-    .radar-wrap {
-      width: 100%;
-      aspect-ratio: 1
-    }
-
-    .radar-wrap svg {
-      width: 100%;
-      height: 100%
-    }
-
-    .sb-legend {
-      display: flex;
-      gap: 12px;
-      font-size: 10px;
-      color: var(--ink3)
-    }
-
-    .leg {
-      display: flex;
-      align-items: center;
-      gap: 5px
-    }
-
-    .leg-line {
-      width: 16px;
-      height: 2px;
-      border-radius: 99px
-    }
-
-    .leg-dash {
-      height: 0;
-      border-top: 2px dashed var(--now)
-    }
-
-    .dlist {
-      display: flex;
-      flex-direction: column;
-      gap: 5px
-    }
-
-    .drow {
-      display: grid;
-      grid-template-columns: 18px 1fr auto auto;
-      align-items: center;
-      gap: 5px;
-      font-size: 11px
-    }
-
-    .drow.hdr {
-      font-size: 9px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--ink4);
-      margin-bottom: 1px
-    }
-
-    .dname {
-      color: var(--ink2)
-    }
-
-    .dnow {
-      color: var(--now);
-      font-weight: 500;
-      min-width: 22px;
-      text-align: right
-    }
-
-    .dfut {
-      color: var(--fut);
-      font-weight: 500;
-      min-width: 22px;
-      text-align: right
-    }
-
     @media(max-width:700px) {
       .page {
         grid-template-columns: 1fr;
@@ -949,107 +853,19 @@
       </div>
     </main>
 
-    <!-- Sidebar -->
-    <aside>
-      <div class="sb-title">Your daisy diagram</div>
-      <div class="radar-wrap">
-        <svg id="rsvg" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
-          <polygon id="rg25" fill="none" stroke="#e0ddd6" stroke-width=".5" points="" />
-          <polygon id="rg50" fill="none" stroke="#e0ddd6" stroke-width=".5" points="" />
-          <polygon id="rg75" fill="none" stroke="#e0ddd6" stroke-width=".5" points="" />
-          <g id="raxes" stroke="#d8d6cf" stroke-width=".5"></g>
-          <polygon id="pnow" fill="#185FA5" fill-opacity=".12" stroke="#185FA5" stroke-width="1.5"
-            stroke-dasharray="4 3" stroke-opacity=".7" points="" />
-          <polygon id="pfut" fill="#B06D00" fill-opacity=".15" stroke="#B06D00" stroke-width="2" points="" />
-          <g id="rlbls" font-size="8.5" font-family="DM Sans,sans-serif" fill="#8a8a84" text-anchor="middle"></g>
-          <circle cx="130" cy="130" r="2.5" fill="#c2c0b6" />
-        </svg>
-      </div>
-      <div class="sb-legend">
-        <div class="leg">
-          <div class="leg-line leg-dash"></div><span>Current</span>
-        </div>
-        <div class="leg">
-          <div class="leg-line" style="background:var(--fut)"></div><span>By 2050</span>
-        </div>
-      </div>
-      <div class="dlist" id="dlist"></div>
-    </aside>
+
 
   </div>
 
   <script>
-    const V = { eq1n: 50, eq1f: 50, eq2n: 50, eq2f: 50, eq3n: 50, eq3f: 50, eq4n: 50, eq4f: 50, bi1n: 50, bi1f: 50, bi2n: 50, bi2f: 50, bi3n: 50, bi3f: 50, bi4n: 50, bi4f: 50, tr1n: 50, tr1f: 50, tr2n: 50, tr2f: 50, tr3n: 50, tr3f: 50 };
+    // ── State ──────────────────────────────────────────────────────────────────
+    const V = {
+      eq1n: 50, eq1f: 50, eq2n: 50, eq2f: 50, eq3n: 50, eq3f: 50, eq4n: 50, eq4f: 50,
+      bi1n: 50, bi1f: 50, bi2n: 50, bi2f: 50, bi3n: 50, bi3f: 50, bi4n: 50, bi4f: 50,
+      tr1n: 50, tr1f: 50, tr2n: 50, tr2f: 50, tr3n: 50, tr3f: 50
+    };
 
-    const SPOKES = [
-      { n: 'eq1', lbl: 'Procedural\nequity', c: '#D85A30' },
-      { n: 'eq2', lbl: 'Distributive\nequity', c: '#D85A30' },
-      { n: 'eq3', lbl: 'Recognitional\nequity', c: '#D85A30' },
-      { n: 'eq4', lbl: 'Capabilities\nequity', c: '#D85A30' },
-      { n: 'bi1', lbl: 'Genetic\ndiversity', c: '#C0392B' },
-      { n: 'bi2', lbl: 'Species\ndiversity', c: '#C0392B' },
-      { n: 'bi3', lbl: 'Habitat\ndiversity', c: '#C0392B' },
-      { n: 'bi4', lbl: 'Ecosystem\nfunctions', c: '#C0392B' },
-      { n: 'tr1', lbl: 'Personal\nlevel', c: '#534AB7' },
-      { n: 'tr2', lbl: 'Practical\nlevel', c: '#534AB7' },
-      { n: 'tr3', lbl: 'Political\nlevel', c: '#534AB7' },
-    ];
-    const N = SPOKES.length, CX = 130, CY = 130, R = 88;
-
-    function angle(i) { return (Math.PI * 2 * i / N) - Math.PI / 2 }
-    function pt(i, pct) { const a = angle(i); return { x: CX + pct * R * Math.cos(a), y: CY + pct * R * Math.sin(a) } }
-    function poly(pcts) { return pcts.map((p, i) => { const q = pt(i, p); return q.x + ',' + q.y }).join(' ') }
-
-    function buildSkeleton() {
-      const ax = document.getElementById('raxes');
-      const lb = document.getElementById('rlbls');
-      SPOKES.forEach((s, i) => {
-        const tip = pt(i, 1);
-        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('x1', CX); line.setAttribute('y1', CY); line.setAttribute('x2', tip.x); line.setAttribute('y2', tip.y);
-        ax.appendChild(line);
-        const lp = pt(i, 1.26);
-        const lines = s.lbl.split('\n');
-        const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        txt.setAttribute('x', lp.x); txt.setAttribute('y', lp.y - (lines.length - 1) * 5);
-        txt.setAttribute('fill', s.c); txt.setAttribute('font-weight', '500');
-        const ta = lp.x < CX - 8 ? 'end' : lp.x > CX + 8 ? 'start' : 'middle';
-        txt.setAttribute('text-anchor', ta);
-        lines.forEach((ln, li) => {
-          const ts = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-          ts.setAttribute('x', lp.x); ts.setAttribute('dy', li === 0 ? 0 : '1.15em'); ts.textContent = ln;
-          txt.appendChild(ts);
-        });
-        lb.appendChild(txt);
-      });
-      [.25, .5, .75].forEach((p, ri) => {
-        document.getElementById(['rg25', 'rg50', 'rg75'][ri]).setAttribute('points', poly(SPOKES.map(() => p)));
-      });
-    }
-
-    function updateRadar() {
-      document.getElementById('pnow').setAttribute('points', poly(SPOKES.map(s => V[s.n + 'n'] / 100)));
-      document.getElementById('pfut').setAttribute('points', poly(SPOKES.map(s => V[s.n + 'f'] / 100)));
-      updateDelta();
-    }
-
-    const GROUPS = [
-      { ico: '⚖️', lbl: 'Equity', ks: ['eq1', 'eq2', 'eq3', 'eq4'] },
-      { ico: '🌿', lbl: 'Biodiversity', ks: ['bi1', 'bi2', 'bi3', 'bi4'] },
-      { ico: '🔄', lbl: 'Transformation', ks: ['tr1', 'tr2', 'tr3'] },
-    ];
-    function gavg(ks, suf) { return Math.round(ks.reduce((s, k) => s + V[k + suf], 0) / ks.length) }
-
-    function updateDelta() {
-      const dl = document.getElementById('dlist');
-      dl.innerHTML = '<div class="drow hdr"><span></span><span>Theme</span><span class="dnow">Now</span><span class="dfut">2050</span></div>';
-      GROUPS.forEach(g => {
-        const r = document.createElement('div'); r.className = 'drow';
-        r.innerHTML = `<span style="font-size:13px">${g.ico}</span><span class="dname">${g.lbl}</span><span class="dnow">${gavg(g.ks, 'n')}</span><span class="dfut">${gavg(g.ks, 'f')}</span>`;
-        dl.appendChild(r);
-      });
-    }
-
+    // ── Slider handler ─────────────────────────────────────────────────────────
     function sl(inp) {
       const k = inp.dataset.k, v = parseInt(inp.value);
       V[k] = v;
@@ -1058,11 +874,21 @@
       inp.style.background = inp.classList.contains('nr')
         ? `linear-gradient(to right,var(--now) ${pct},#e0ddd6 ${pct})`
         : `linear-gradient(to right,var(--fut) ${pct},#e0ddd6 ${pct})`;
-      updateRadar(); updateProg();
+
+      // Notify diagram module if connected
+      if (typeof window.updateDaisyValues === 'function') {
+        window.updateDaisyValues(V);
+      }
+
+      updateProg();
     }
 
-    function td(id) { document.getElementById(id).classList.toggle('open') }
+    // ── Definition toggle ──────────────────────────────────────────────────────
+    function td(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
 
+    // ── Step navigation ────────────────────────────────────────────────────────
     let cur = 0;
     const STEPS = ['c0', 'c1', 'c2'];
     const STEPLBLS = ['Equity', 'Biodiversity', 'Transformation'];
@@ -1073,18 +899,24 @@
         document.getElementById(id).classList.toggle('on', i === n);
         const b = document.getElementById('sb' + i);
         b.classList.remove('active', 'done');
-        if (i === n) b.classList.add('active'); else if (i < n) b.classList.add('done');
+        if (i === n) b.classList.add('active');
+        else if (i < n) b.classList.add('done');
       });
       document.getElementById('csub').classList.toggle('on', n === 3);
       document.getElementById('bback').style.visibility = n === 0 ? 'hidden' : 'visible';
       document.getElementById('bnext').style.display = n === 3 ? 'none' : '';
       if (n < 3) document.getElementById('nlabel').textContent = NEXTLBLS[n];
-      document.getElementById('ptxt').textContent = n < 3 ? `Step ${n + 1} of 3 — ${STEPLBLS[n]}` : 'All done!';
-      cur = n; updateProg(); window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.getElementById('ptxt').textContent =
+        n < 3 ? `Step ${n + 1} of 3 — ${STEPLBLS[n]}` : 'All done!';
+      cur = n;
+      updateProg();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    function goNext() { if (cur < 3) go(cur + 1) }
-    function goBack() { if (cur > 0) go(cur - 1) }
 
+    function goNext() { if (cur < 3) go(cur + 1); }
+    function goBack() { if (cur > 0) go(cur - 1); }
+
+    // ── Progress bar ───────────────────────────────────────────────────────────
     function updateProg() {
       const moved = Object.values(V).filter(v => v !== 50).length;
       const pct = Math.round(moved / Object.keys(V).length * 100);
@@ -1092,14 +924,17 @@
       document.getElementById('ppct').textContent = pct + '%';
     }
 
+    // ── Submission ─────────────────────────────────────────────────────────────
     function submitForm() {
       const payload = Object.assign({}, V);
       console.log('Submission payload:', JSON.stringify(payload, null, 2));
       alert('Submitted! In production this POSTs to your PHP handler.\n\nPayload logged to console.');
     }
 
-    buildSkeleton(); updateRadar(); updateProg();
+    // ── Init ───────────────────────────────────────────────────────────────────
+    updateProg();
   </script>
+
 </body>
 
 </html>
