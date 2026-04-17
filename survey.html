@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRD2 — Submit your innovation</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafaf8;
+            color: #1a1a18;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .wrap {
+            max-width: 620px;
+            margin: 0 auto;
+            background: #fff;
+            border: 0.5px solid #e0ddd5;
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 500;
+            color: #C0392B;
+            margin-bottom: 2rem;
+            line-height: 1.3;
+        }
+
+        .steps {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            z-index: 1;
+        }
+
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1.5px solid #C0392B;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: #C0392B;
+            background: #fff;
+        }
+
+        .step-num.active {
+            background: #C0392B;
+            color: #fff;
+        }
+
+        .step-lbl {
+            font-size: 11px;
+            color: #888;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .step-lbl.active {
+            color: #C0392B;
+            font-weight: 500;
+        }
+
+        .step-line {
+            flex: 1;
+            height: 1px;
+            background: #ddd;
+            margin-top: 14px;
+        }
+
+        .desc-block {
+            margin-bottom: 1.5rem;
+        }
+
+        .desc-block p {
+            font-size: 13.5px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+        }
+
+        .desc-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .desc-block strong {
+            color: #1a1a18;
+            font-weight: 500;
+        }
+
+        .req-note {
+            font-size: 11px;
+            color: #aaa;
+            margin-bottom: 1.25rem;
+        }
+
+        .req-note span {
+            color: #C0392B;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: #C0392B;
+            margin: 1.5rem 0 .75rem;
+        }
+
+        .section-label:first-of-type {
+            margin-top: 0;
+        }
+
+        .field {
+            margin-bottom: .75rem;
+        }
+
+        .field label {
+            display: block;
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 4px;
+        }
+
+        .field label span {
+            color: #C0392B;
+        }
+
+        .field input,
+        .field textarea {
+            width: 100%;
+            background: #fff;
+            border: 0.5px solid #ccc;
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 14px;
+            color: #1a1a18;
+            outline: none;
+            transition: border-color .15s;
+            font-family: inherit;
+        }
+
+        .field input:focus,
+        .field textarea:focus {
+            border-color: #C0392B;
+            box-shadow: 0 0 0 3px rgba(192, 57, 43, .08);
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 80px;
+            line-height: 1.5;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .75rem;
+        }
+
+        .hint {
+            font-size: 11px;
+            color: #aaa;
+            margin-top: 3px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 0.5px solid #e8e5de;
+            margin: 1.5rem 0;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #C0392B;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 1rem;
+            letter-spacing: .02em;
+            font-family: inherit;
+            transition: opacity .15s;
+        }
+
+        .submit-btn:hover {
+            opacity: .88;
+        }
+
+        @media (max-width: 500px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            .wrap {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <h1>Simplified Transformative Diagnostic Tool (TRD2)</h1>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-num active">1</div>
+                <div class="step-lbl active">Your<br>Project</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-lbl">Current<br>Potential</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-lbl">Future<br>Potential (2050)</div>
+            </div>
+        </div>
+
+        <div class="desc-block">
+            <p>The <strong>Transformative Diagnostic Tool (TRD2)</strong> helps you see how your innovation contributes
+                to meaningful change for <strong>people and the planet</strong>. It looks at three key dimensions —
+                <strong>transformation, equity, and biodiversity</strong> — that together shape a just and lasting
+                future. By comparing where you are today with your ambitions for 2050, TRD2 creates a simple radar chart
+                showing your current strengths and future opportunities.</p>
+            <p>Before you start, please share a few details about your innovation — this helps us generate the
+                <strong>TRD2 results</strong> and send the <strong>radar chart</strong> by email. Fields marked with
+                <span style="color:#C0392B">*</span> are required.</p>
+        </div>
+
+        <p class="req-note">Fields marked <span>*</span> are required</p>
+
+        <div class="section-label">About you</div>
+        <div class="row">
+            <div class="field">
+                <label>Name <span>*</span></label>
+                <input type="text" placeholder="Your full name">
+            </div>
+            <div class="field">
+                <label>Email address <span>*</span></label>
+                <input type="email" placeholder="you@example.com">
+            </div>
+        </div>
+
+        <hr class="divider">
+        <div class="section-label">About your innovation</div>
+
+        <div class="field">
+            <label>Innovation title <span>*</span></label>
+            <input type="text" placeholder="Short name or title">
+        </div>
+
+        <div class="row">
+            <div class="field">
+                <label>Country or region <span>*</span></label>
+                <input type="text" placeholder="e.g. Spain, West Africa">
+            </div>
+            <div class="field">
+                <label>Stage of development</label>
+                <input type="text" placeholder="e.g. idea, pilot, scaling">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="field">
+                <label>Sector <span>*</span></label>
+                <input type="text" placeholder="e.g. energy, education">
+            </div>
+            <div class="field">
+                <label>Organisation type <span>*</span></label>
+                <input type="text" placeholder="e.g. NGO, university, SME">
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Innovation type</label>
+            <input type="text" placeholder="e.g. social, technological, digital, policy, or mixed">
+        </div>
+
+        <div class="field">
+            <label>Brief description</label>
+            <textarea placeholder="1–2 sentences giving context about your initiative"></textarea>
+        </div>
+
+        <div class="field">
+            <label>Website or link</label>
+            <input type="url" placeholder="https://...">
+            <div class="hint">Optional — to learn more about your initiative</div>
+        </div>
+
+        <button class="submit-btn">Next</button>
+    </div>
+</body>
+
+</html>
