@@ -148,9 +148,108 @@ input[type=range]::-webkit-slider-thumb {
   transition: opacity .5s;
 }
 
-.right img#horse-3,
+/* horse-1 — contain, ne zoomaj */
+.right img#horse-1 {
+  object-fit: contain;
+  transform: none;
+}
+
+/* horse-2 — mali zoom */
+.right img#horse-2 {
+  object-fit: cover;
+  transform: scale(1.08);
+  transform-origin: center center;
+}
+
+/* horse-4 — siva pozadina, pomakni lijevo da se vidi glava */
 .right img#horse-4 {
+  object-fit: cover;
+  transform: scale(1.05);
+  transform-origin: 70% center;
+}
+
+/* horse-5 — siva pozadina */
+.right img#horse-5 {
   object-fit: cover;
   transform: scale(1.1);
   transform-origin: center center;
+}
+
+/* horse-6 — pomakni lijevo da se vidi glava, malo odzumi */
+.right img#horse-6 {
+  object-fit: cover;
+  transform: scale(1.05);
+  transform-origin: 65% center;
+}
+
+/* ── Luck images ── */
+
+.right img.luck-img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  transition: opacity .5s;
+}
+
+
+/* ── Slider wrap with end values ── */
+
+.slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slider-wrap input[type=range] {
+  flex: 1;
+}
+
+.val-lo, .val-hi {
+  font-size: 11px;
+  color: #555;
+  min-width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.val-display {
+  font-size: 11px;
+  color: #444;
+  margin-top: 4px;
+}
+
+/* ── Luck Factor ── */
+
+.luck-row {
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  display: flex;
+  justify-content: center;
+}
+
+.luck-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.luck-label input[type=checkbox] {
+  width: 16px;
+  height: 16px;
+  accent-color: #22c55e;
+  cursor: pointer;
+}
+
+.luck-text {
+  font-size: 13px;
+  color: #888;
+  transition: color .2s;
+}
+
+.luck-label:has(input:checked) .luck-text {
+  color: #22c55e;
+  font-weight: 500;
 }

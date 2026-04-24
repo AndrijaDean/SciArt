@@ -1,21 +1,23 @@
 /*
   Trilemma Sliders — sliders.js
   --------------------------------
-  Relationship map:
-    price   → quality same direction, speed opposite
-    quality → price same direction,   speed opposite
-    speed   → price opposite,         quality opposite
+  6 horses, quality-driven (range 10–90):
+    horse-1  10–23   worst
+    horse-2  24–37
+    horse-3  38–51
+    horse-4  52–65
+    horse-5  66–79
+    horse-6  80–90   best
 
-  Image order (worst → best, driven by quality value):
-    horse-1  0–25   worst
-    horse-2  26–50
-    horse-3  51–75
-    horse-4  76–100 best
+  Limits:
+    price   : 10–90
+    quality : 10–90
+    speed   : 10–100
 
-  Required HTML element IDs:
-    Sliders : s-price, s-quality, s-speed
-    Images  : horse-1, horse-2, horse-3, horse-4
-    Badge   : badge-verdict
+  Luck Factor:
+    - bad state  (quality < 50) → horse-luck-bad  (cubist/expressive style)
+    - good state (quality >= 50) → horse-luck-good (unicorn/special)
+    - turns off on any slider interaction
 */
 
 const s = {
@@ -24,43 +26,89 @@ const s = {
   speed:   document.getElementById('s-speed'),
 };
 
-const badge  = document.getElementById('badge-verdict');
-const horses = ['horse-1', 'horse-2', 'horse-3', 'horse-4'];
+const vDisplay = {
+  price:   document.getElementById('v-price'),
+  quality: document.getElementById('v-quality'),
+  speed:   document.getElementById('v-speed'),
+};
 
-let active = null;
+const badge     = document.getElementById('badge-verdict');
+const luckCb    = document.getElementById('luck-factor');
+const rightEl   = document.querySelector('.right');
 
-const rightEl = document.querySelector('.right');
-const horseBg = ['#ffffff', '#ffffff', '#c8c6c2', '#c8c6c2'];
+const horses    = ['horse-1','horse-2','horse-3','horse-4','horse-5','horse-6'];
+const horseBg   = ['#ffffff','#ffffff','#ffffff','#c8c6c2','#c8c6c2','#c8c6c2'];
+const luckImgs  = ['horse-luck-bad','horse-luck-good'];
+
+let active      = null;
+let luckActive  = false;
+
+// ── Helpers ──────────────────────────────────────────────
 
 function showHorse(idx) {
   horses.forEach((id, i) => {
     document.getElementById(id).style.opacity = i === idx ? '1' : '0';
   });
+  luckImgs.forEach(id => {
+    document.getElementById(id).style.opacity = '0';
+  });
   rightEl.style.background = horseBg[idx];
 }
 
+function showLuck() {
+  const q = +s.quality.value;
+  const luckId = q < 50 ? 'horse-luck-bad' : 'horse-luck-good';
+  const hidId  = q < 50 ? 'horse-luck-good' : 'horse-luck-bad';
+  horses.forEach(id => {
+    document.getElementById(id).style.opacity = '0';
+  });
+  document.getElementById(hidId).style.opacity = '0';
+  document.getElementById(luckId).style.opacity = '1';
+  rightEl.style.background = '#ffffff';
+}
+
+function getHorseIdx(q) {
+  if      (q <= 23) return 0;
+  else if (q <= 37) return 1;
+  else if (q <= 51) return 2;
+  else if (q <= 65) return 3;
+  else if (q <= 79) return 4;
+  else              return 5;
+}
+
+function clampPrice(v)   { return Math.min(90, Math.max(10, v)); }
+function clampQuality(v) { return Math.min(90, Math.max(10, v)); }
+function clampSpeed(v)   { return Math.min(100, Math.max(10, v)); }
+
 function applyRules(changed, val) {
+  // Map val (10-90) to inverted (10-90): inv = 100 - val
+  // e.g. val=10 → inv=90, val=90 → inv=10, val=50 → inv=50
   if (changed === 'price') {
-    s.quality.value = val;        // cheap → poor,  expensive → good
-    s.speed.value   = 100 - val;  // cheap → fast,  expensive → slow
+    s.price.value   = clampPrice(val);
+    s.quality.value = clampQuality(val);
+    s.speed.value   = clampSpeed(100 - val);
   } else if (changed === 'quality') {
-    s.price.value   = val;        // poor  → cheap, good → expensive
-    s.speed.value   = 100 - val;  // poor  → fast,  good → slow
+    s.quality.value = clampQuality(val);
+    s.price.value   = clampPrice(val);
+    s.speed.value   = clampSpeed(100 - val);
   } else {
-    s.price.value   = 100 - val;  // fast  → cheap, slow → expensive
-    s.quality.value = 100 - val;  // fast  → poor,  slow → good
+    // speed inverted: fast(100) → price/quality low(10), slow(10) → price/quality high(90)
+    s.speed.value   = clampSpeed(val);
+    const inv = clampPrice(100 - val);
+    s.price.value   = inv;
+    s.quality.value = clampQuality(inv);
   }
 }
 
-function updateVisuals() {
-  const q = +s.quality.value;
+function updateValueDisplays() {
+  Object.keys(vDisplay).forEach(k => {
+    vDisplay[k].textContent = s[k].value;
+  });
+}
 
-  if      (q <= 25) showHorse(0);
-  else if (q <= 50) showHorse(1);
-  else if (q <= 75) showHorse(2);
-  else              showHorse(3);
-
+function updateBadge() {
   const p  = +s.price.value;
+  const q  = +s.quality.value;
   const sp = +s.speed.value;
   const parts = [];
 
@@ -68,8 +116,8 @@ function updateVisuals() {
   if (p  > 65) parts.push('expensive');
   if (q  < 35) parts.push('poor quality');
   if (q  > 65) parts.push('good quality');
-  if (sp < 35) parts.push('slow');
-  if (sp > 65) parts.push('fast');
+  if (sp < 40) parts.push('slow');
+  if (sp > 70) parts.push('fast');
 
   if (!parts.length) {
     badge.textContent = 'Balanced';
@@ -78,16 +126,52 @@ function updateVisuals() {
   }
 
   badge.textContent = parts.join(' · ');
-  const hasGood = parts.some(l => ['good quality', 'fast', 'cheap'].includes(l));
-  const hasBad  = parts.some(l => ['poor quality', 'slow', 'expensive'].includes(l));
+  const hasGood = parts.some(l => ['good quality','fast','cheap'].includes(l));
+  const hasBad  = parts.some(l => ['poor quality','slow','expensive'].includes(l));
   badge.className = 'badge ' + (hasGood && !hasBad ? 'badge-cyan' : hasBad && !hasGood ? 'badge-coral' : 'badge-mixed');
 }
 
+function updateVisuals() {
+  if (luckActive) return; // don't change horse while luck is on
+  showHorse(getHorseIdx(+s.quality.value));
+  updateValueDisplays();
+  updateBadge();
+}
+
+// ── Slider events ─────────────────────────────────────────
+
+// Hard limits per slider
+const LIMITS = {
+  price:   { min: 10, max: 90  },
+  quality: { min: 10, max: 90  },
+  speed:   { min: 10, max: 100 },
+};
+
+function enforceLimits(key) {
+  const lim = LIMITS[key];
+  const v = +s[key].value;
+  if (v < lim.min) s[key].value = lim.min;
+  if (v > lim.max) s[key].value = lim.max;
+}
+
 Object.keys(s).forEach(key => {
-  s[key].addEventListener('mousedown',  () => active = key);
-  s[key].addEventListener('touchstart', () => active = key, { passive: true });
+  s[key].addEventListener('mousedown', () => {
+    active = key;
+    if (luckActive) {
+      luckActive = false;
+      luckCb.checked = false;
+    }
+  });
+  s[key].addEventListener('touchstart', () => {
+    active = key;
+    if (luckActive) {
+      luckActive = false;
+      luckCb.checked = false;
+    }
+  }, { passive: true });
   s[key].addEventListener('input', () => {
     if (active !== key) return;
+    enforceLimits(key);
     applyRules(key, +s[key].value);
     updateVisuals();
   });
@@ -95,5 +179,18 @@ Object.keys(s).forEach(key => {
 
 document.addEventListener('mouseup',  () => active = null);
 document.addEventListener('touchend', () => active = null);
+
+// ── Luck Factor ───────────────────────────────────────────
+
+luckCb.addEventListener('change', () => {
+  luckActive = luckCb.checked;
+  if (luckActive) {
+    showLuck();
+  } else {
+    updateVisuals();
+  }
+});
+
+// ── Init ──────────────────────────────────────────────────
 
 updateVisuals();
