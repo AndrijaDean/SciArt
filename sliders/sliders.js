@@ -38,7 +38,7 @@ const rightEl   = document.querySelector('.right');
 
 const horses    = ['horse-1','horse-2','horse-3','horse-4','horse-5','horse-6'];
 const horseBg   = ['#ffffff','#ffffff','#ffffff','#c8c6c2','#c8c6c2','#c8c6c2'];
-const luckImgs  = ['horse-luck-bad','horse-luck-good'];
+const luckImgs  = ['horse-luck-0','horse-luck-1','horse-luck-2','horse-luck-3','horse-luck-4','horse-luck-5'];
 
 let active      = null;
 let luckActive  = false;
@@ -56,14 +56,13 @@ function showHorse(idx) {
 }
 
 function showLuck() {
-  const q = +s.quality.value;
-  const luckId = q < 50 ? 'horse-luck-bad' : 'horse-luck-good';
-  const hidId  = q < 50 ? 'horse-luck-good' : 'horse-luck-bad';
+  const randomIdx = Math.floor(Math.random() * luckImgs.length);
   horses.forEach(id => {
     document.getElementById(id).style.opacity = '0';
   });
-  document.getElementById(hidId).style.opacity = '0';
-  document.getElementById(luckId).style.opacity = '1';
+  luckImgs.forEach((id, i) => {
+    document.getElementById(id).style.opacity = i === randomIdx ? '1' : '0';
+  });
   rightEl.style.background = '#ffffff';
 }
 
@@ -81,21 +80,32 @@ function clampQuality(v) { return Math.min(90, Math.max(10, v)); }
 function clampSpeed(v)   { return Math.min(100, Math.max(10, v)); }
 
 function applyRules(changed, val) {
-  // Map val (10-90) to inverted (10-90): inv = 100 - val
-  // e.g. val=10 → inv=90, val=90 → inv=10, val=50 → inv=50
+  /*
+    Speed range:  10–100 (span = 90)
+    Price/Quality range: 10–90 (span = 80)
+
+    Mapping speed → price/quality (inverted, scaled):
+      speed=10  → pq=90
+      speed=100 → pq=10
+      formula: pq = 90 - ((val - 10) / 90) * 80
+
+    Mapping price/quality → speed (inverted, scaled):
+      pq=10 → speed=100
+      pq=90 → speed=10
+      formula: speed = 100 - ((val - 10) / 80) * 90
+  */
   if (changed === 'price') {
     s.price.value   = clampPrice(val);
     s.quality.value = clampQuality(val);
-    s.speed.value   = clampSpeed(100 - val);
+    s.speed.value   = clampSpeed(Math.round(100 - ((val - 10) / 80) * 90));
   } else if (changed === 'quality') {
     s.quality.value = clampQuality(val);
     s.price.value   = clampPrice(val);
-    s.speed.value   = clampSpeed(100 - val);
+    s.speed.value   = clampSpeed(Math.round(100 - ((val - 10) / 80) * 90));
   } else {
-    // speed inverted: fast(100) → price/quality low(10), slow(10) → price/quality high(90)
     s.speed.value   = clampSpeed(val);
-    const inv = clampPrice(100 - val);
-    s.price.value   = inv;
+    const inv = Math.round(90 - ((val - 10) / 90) * 80);
+    s.price.value   = clampPrice(inv);
     s.quality.value = clampQuality(inv);
   }
 }
