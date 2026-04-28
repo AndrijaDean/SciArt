@@ -387,12 +387,21 @@
 
     /* Hide everything except the print summary */
     body > * { display: none !important; }
-    #print-summary { display: block !important; }
+    #print-summary {
+      display: flex !important;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: calc(100vh - 20mm);
+    }
   }
 
   /* Hidden on screen, shown only on print */
   #print-summary {
     display: none;
+    height: 100vh;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   /* Print summary layout */
@@ -420,6 +429,7 @@
     color: #143D58;
     font-family: Arial, sans-serif;
     border: 2px solid #143D58;
+    flex: 1;
   }
   .ps-box-title {
     font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
